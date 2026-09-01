@@ -1,0 +1,329 @@
+﻿<!--
+DESIGN PLAN — Variation K2 v3: fresher-friendly, reference-synthesized
+
+What changed from v2 (synthesis of skysingh04 + arpitbhayani + grahammann):
+- Hero: added fact row (degree, city, email, graduating) + prominent resume button
+  (Sky Singh pattern: immediate answers to who/where/contact)
+- Hero sub: replaced "no internships yet" with "Currently" line (Arpit's
+  "always building" energy — shows momentum, not apology)
+- Writing list: added category tags [AI/ML] [Systems] etc. (Graham Mann rhythm)
+- New section: Achievements (placeholder structure — 3 slots, fill with real
+  hackathons/certs/milestones; even "100-day streak" works)
+- About: two-column layout (photo left, text right) — breaks grid pattern,
+  gives photo structural weight (Graham Mann pattern)
+- Now/Open: full-width strip with different background, no border, larger pulse
+  — feels like a status bar, not another card
+- Footer: "Shubham." (with period) + location + last updated (Graham Mann)
+- Color: added steel-blue secondary accent for secondary interactive elements
+  (writing tags hover, case study links, footer links) — amber stays primary
+- Projects: "case study →" is now a full-width button at card bottom
+- Mobile: resume button stays visible (not hidden in hamburger)
+
+Photo: placeholder (initial on surface, 3:4, radius 12px); swap for real
+portrait at build time. All liveliness budget unchanged.
+-->
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shubham — builds AI systems</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.3.0/dist/font/geist-sans/style.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.3.0/dist/font/geist-mono/style.css">
+<style>
+  :root { --bg:#0b0b0a; --surface:#121211; --border:#262624; --border-hover:#3a3936; --text:#f0efec; --muted:#8f8c84; --accent:#e0aa3e; --accent2:#5a7a9a; --chip:#1a1a19; --chip-bg:#1a1a19; --header-bg:rgba(11,11,10,.85); --glow:rgba(224,170,62,.09); --shadow:0 6px 24px rgba(0,0,0,.4); }
+  @media (prefers-color-scheme: light) {
+    :root { --bg:#faf9f6; --surface:#ffffff; --border:#e7e4dd; --border-hover:#c9c5ba; --text:#1c1b18; --muted:#6e6b62; --accent:#a4711b; --accent2:#4a6a8a; --chip:#f1efe8; --chip-bg:#f1efe8; --header-bg:rgba(250,249,246,.85); --glow:rgba(164,113,27,.07); --shadow:0 8px 24px rgba(28,27,24,.08); }
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body::before { content:""; position:fixed; inset:0; z-index:-1; pointer-events:none; background:radial-gradient(700px 420px at 78% -8%, var(--glow), transparent 70%); }
+  body { font-family:"Geist Sans",system-ui,sans-serif; background:var(--bg); color:var(--text); font-size:15px; line-height:1.6; }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration:.01ms !important; transition-duration:.01ms !important; }
+    html { scroll-behavior:auto; }
+  }
+  a:focus-visible { outline:2px solid var(--accent); outline-offset:2px; border-radius:2px; }
+  .rv { opacity:0; transform:translateY(14px); transition:opacity .5s ease, transform .5s ease; }
+  .rv.in { opacity:1; transform:none; }
+  header.site { position:sticky; top:0; z-index:10; width:100%; background:var(--header-bg); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); border-bottom:1px solid var(--border); }
+  .bar { max-width:1080px; margin:0 auto; padding:14px 24px; display:flex; justify-content:space-between; align-items:center; }
+  .bar > * { flex-shrink:0; }
+  .bar .name { font-weight:700; font-size:1rem; color:var(--text); text-decoration:none; }
+  .bar .name span { color:var(--accent); }
+  .bar nav { display:flexx; gap:4px; }
+  .bar nav a { color:var(--muted); text-decoration:none; font-size:.85rem; padding:5px 10px; border-radius:6px; transition:color .15s, background .15s; }
+  .bar nav a:hover { color:var(--text); background:var(--chip); }
+  .bar nav a.active { color:var(--accent); }
+  .bar { flex-wrap:wrap; gap:8px; }
+  .menu-btn { display:none; background:none; border:1px solid var(--border); color:var(--text); border-radius:6px; padding:5px 10px; font-family:"Geist Mono",monospace; font-size:.75rem; cursor:pointer; }
+  .resume-btn { display:inline-block; border:1px solid var(--border-hover); color:var(--text); text-decoration:none; font-family:"Geist Mono",monospace; font-size:.75rem; padding:6px 12px; border-radius:6px; margin-left:10px; transition:border-color .15s, color .15s; }
+  .resume-btn:hover { border-color:var(--accent); color:var(--accent); }
+  .hero-facts { font-family:"Geist Mono",monospace; font-size:.75rem; color:var(--muted); margin-top:18px; }
+  .hero-facts a { color:var(--accent2); text-decoration:none; }
+  .hero-facts a:hover { text-decoration:underline; }
+  .hero-resume { display:inline-block; margin-top:14px; padding:8px 18px; border:1px solid var(--accent); color:var(--accent); border-radius:6px; font-family:"Geist Mono",monospace; font-size:.78rem; text-decoration:none; transition:background .15s, color .15s; }
+  .hero-resume:hover { background:var(--accent); color:var(--bg); }:var(--accent); color:var(--accent); }
+  main { max-width:1080px; margin:0 auto; padding:0 24px; }
+  h1 { font-size:clamp(2rem,5vw,3rem); font-weight:700; letter-spacing:-.025em; line-height:1.15; }
+  .mono { font-family:"Geist Mono",monospace; }
+  footer { max-width:1080px; margin:56px auto 0; padding:24px; border-top:1px solid var(--border); font-size:.8rem; color:var(--muted); }
+  .footer-top { display:flex; align-items:baseline; margin-bottom:8px; }
+  .footer-links { display:flex; gap:16px; flex-wrap:wrap; }
+  footer a { color:var(--muted); text-decoration:none; }
+  footer a:hover { color:var(--accent2); }
+  .footer-top { margin-bottom:8px; }
+  .footer-name { font-weight:700; font-size:1rem; color:var(--text); }
+  .footer-loc { font-size:.8rem; color:var(--muted); margin-left:12px; }
+  @media (max-width:768px) {
+    .footer-top { flex-direction:column; gap:4px; }
+    .footer-loc { margin-left:0; }
+  }
+  @media (max-width:768px) {
+    .menu-btn { display:block; }
+    .bar { flex-wrap:wrap; }
+    .bar nav { display:none; position:absolute; top:100%; left:0; right:0; background:var(--bg); border-bottom:1px solid var(--border); flex-direction:column; padding:10px 24px 16px; }
+    .bar nav.open { display:flex; }
+    .resume-btn { margin-left:0; order:-1; }
+    .bar nav { display:none; position:absolute; top:100%; left:0; right:0; background:var(--bg); border-bottom:1px solid var(--border); flex-direction:column; padding:10px 24px 16px; }
+    .bar nav.open { display:flex; }
+    .resume-btn { margin-left:0; order:-1; }
+  }
+</style>
+<style>
+  .hero { padding:72px 0 8px; }
+  .hero .hi { font-family:"Geist Mono",monospace; font-size:.8rem; color:var(--accent); letter-spacing:.06em; margin-bottom:14px; }
+  .hero .sub { color:var(--muted); max-width:44em; margin-top:16px; }
+  .signals { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin:36px 0 8px; }
+  .sig { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:16px 20px; transition:border-color .15s; color:var(--text); text-decoration:none; display:block; }
+  .sig:hover { border-color:var(--border-hover); box-shadow:var(--shadow); }
+  .sig b { display:block; font-size:1.4rem; font-weight:700; font-family:"Geist Mono",monospace; }
+  .sig span { font-size:.72rem; color:var(--muted); letter-spacing:.05em; text-transform:uppercase; }
+  section { padding:48px 0 0; }
+  .sec-head { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:18px; }
+  h2 { font-size:.78rem; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); font-weight:600; }
+  .sec-head a { font-family:"Geist Mono",monospace; font-size:.78rem; color:var(--muted); text-decoration:none; }
+  .sec-head a:hover { color:var(--accent); }
+  .projects { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+  .proj { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:20px; display:flex; flex-direction:column; gap:10px; transition:border-color .15s, transform .15s; }
+  .proj:hover { border-color:var(--border-hover); transform:translateY(-2px); box-shadow:var(--shadow); }
+  .proj h3 { font-size:1.05rem; font-weight:700; }
+  .proj > p { color:var(--muted); font-size:.88rem; }
+  .proj .stack { display:flex; flex-wrap:wrap; gap:6px; }
+  .proj .stack code { font-family:"Geist Mono",monospace; font-size:.68rem; background:var(--chip); padding:3px 8px; border-radius:4px; color:var(--muted); }
+  .p-links { display:flex; gap:12px; border-top:1px solid var(--border); padding-top:12px; margin-top:auto; }
+  .p-links a { font-family:"Geist Mono",monospace; font-size:.75rem; color:var(--muted); text-decoration:none; }
+  .p-links a:hover { color:var(--accent); }
+  .p-links a.case { color:var(--text); font-weight:600; margin-left:auto; }
+  .case-btn { display:block; width:100%; text-align:center; padding:10px; margin-top:12px; border:1px solid var(--border); border-radius:6px; font-family:"Geist Mono",monospace; font-size:.75rem; color:var(--text); text-decoration:none; transition:border-color .15s, color .15s; }
+  .case-btn:hover { border-color:var(--accent2); color:var(--accent2); }
+</style>
+<style>
+  .about { display:grid; grid-template-columns:150px 1fr; gap:32px; align-items:start; }
+  .about .photo { width:150px; }
+  .photo { width:220px; aspect-ratio:3/4; border-radius:12px; background:var(--surface); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; font-family:"Geist Mono",monospace; font-size:3rem; color:var(--accent); }
+  .hero-row { display:grid; grid-template-columns:1fr auto; gap:40px; align-items:center; margin-top:4px; }
+  .hero-row .photo { width:200px; }
+  .about p { color:var(--muted); margin-bottom:12px; max-width:56em; }
+  .about p strong { color:var(--text); font-weight:600; }
+  .facts { list-style:none; display:flex; flex-wrap:wrap; gap:6px; margin-top:6px; }
+  .facts li { font-family:"Geist Mono",monospace; font-size:.7rem; background:var(--chip); padding:3px 8px; border-radius:4px; color:var(--muted); }
+  .posts { list-style:none; border-top:1px solid var(--border); }
+  .posts li { display:flex; gap:20px; padding:13px 2px; border-bottom:1px solid var(--border); align-items:baseline; }
+  .posts time { font-family:"Geist Mono",monospace; font-size:.75rem; color:var(--muted); font-variant-numeric:tabular-nums; min-width:88px; }
+  .posts a { color:var(--text); text-decoration:none; font-size:.95rem; }
+  .posts a:hover { color:var(--accent); }
+  .posts .tag { font-family:"Geist Mono",monospace; font-size:.65rem; padding:2px 6px; background:var(--chip); color:var(--muted); border-radius:3px; }
+  .posts .tag:hover { color:var(--accent2); }
+  .nowgrid { display:grid; grid-template-columns:1.2fr .8fr; gap:10px; }
+  .nowstrip { background:var(--chip); border:none; border-radius:10px; padding:20px 24px; display:flex; justify-content:space-between; align-items:center; gap:24px; }
+  .now, .open { background:transparent; border:none; border-radius:0; padding:0; flex:1; }
+  .now .label, .open .label { display:flex; align-items:center; gap:8px; font-family:"Geist Mono",monospace; font-size:.7rem; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin-bottom:10px; }
+  .pulse { width:10px; height:10px; border-radius:50%; background:var(--accent); animation:pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.35} }
+  .now p, .open p { color:var(--muted); font-size:.9rem; }
+  .open strong { color:var(--text); }
+  .mailto { display:inline-block; margin-top:12px; font-family:"Geist Mono",monospace; font-size:.8rem; color:var(--accent); text-decoration:none; }
+  .mailto:hover { text-decoration:underline; }
+  .ach-list { list-style:none; border-top:1px solid var(--border); }
+  .ach-list li { display:flex; gap:16px; padding:12px 2px; border-bottom:1px solid var(--border); align-items:baseline; }
+  .ach-place { font-family:"Geist Mono",monospace; font-size:.75rem; color:var(--accent2); min-width:70px; }
+  .ach-event { color:var(--text); font-size:.9rem; }
+  .ach-year { font-family:"Geist Mono",monospace; font-size:.7rem; color:var(--muted); margin-left:auto; }
+  @media (max-width:768px) {
+    .signals { grid-template-columns:repeat(2,1fr); }
+    .projects { grid-template-columns:1fr; }
+    .hero-row { grid-template-columns:1fr; gap:20px; }
+    .hero-row .photo { order:-1; width:150px; }
+    .photo { width:150px; }
+    .posts li { flex-direction:column; gap:2px; }
+    .nowstrip { flex-direction:column; align-items:flex-start; gap:16px; }
+    .nowgrid { grid-template-columns:1fr; }
+  }
+</style>
+<noscript><style>.rv{opacity:1;transform:none}</style></noscript>
+</head>
+<body>
+
+<header class="site">
+  <div class="bar">
+    <a class="name" href="variation-k2.html">Shubham<span>.</span></a>
+    <nav id="mainNav">
+      <a href="#work" class="active">Work</a>
+      <a href="writing.html">Writing</a>
+      <a href="reading.html">Reading</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <a href="#contact" class="resume-btn" aria-label="Download resume (PDF placeholder in mockup)">resume ↓</a>
+
+    <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="mainNav">menu</button>
+  </div>
+</header>
+
+<main>
+  <div class="hero rv">
+    <p class="hi">shubham · iiitm gwalior · b.tech + m.tech it · 2027</p>
+    <div class="hero-row">
+      <div>
+        <h1>I build AI systems that actually ship.</h1>
+        <p class="sub">Third-year CS student. Three products built, 500+ DSA problems across platforms, and writing on everything I learn along the way. Currently: rebuilding Merix's matching pipeline, reading DDIA ch. 7, grinding Codeforces to 1900.</p>
+        <p class="hero-facts">B.Tech + M.Tech IT · IIITM Gwalior · Gwalior, India · graduating 2027 · <a href="mailto:shubham@example.com">shubham@example.com</a></p>
+        <a href="#" class="hero-resume" aria-label="Download resume (PDF placeholder)">download resume ↓</a>
+      </div>
+      <div class="photo" role="img" aria-label="Portrait of Shubham — placeholder, swap with a real photo at build time">S</div>
+    </div>
+    <!-- counts are mockup placeholders. Real build: daily GitHub Action fetches
+         api.codolio.com/user (+ TUF + GitHub proxy) -> public/coding-stats.json
+         -> read at build time. See docs/coding-stats.md -->
+    <div class="signals rv" role="list" aria-label="Key numbers">
+      <a class="sig" role="listitem" href="https://codeforces.com/profile/prsdx"><b>1847</b><span>codeforces · expert</span></a>
+      <div class="sig" role="listitem"><b>500+</b><span>dsa problems · cf + lc + cc</span></div>
+      <a class="sig" role="listitem" href="https://github.com/prsdx"><b>300+</b><span>github · contributions</span></a>
+      <div class="sig" role="listitem"><b>3</b><span>products shipped</span></div>
+    </div>
+  </div>
+
+  <section id="work" aria-labelledby="work-h">
+    <div class="sec-head rv">
+      <h2 id="work-h">Selected work</h2>
+      <a href="#">all projects →</a>
+    </div>
+    <div class="projects">
+      <article class="proj rv">
+        <h3>Merix</h3>
+        <p>B2B SaaS platform that matches resumes to job descriptions using AI. Built for campus placement cells drowning in applications.</p>
+        <div class="stack"><code>Python</code><code>FastAPI</code><code>OpenAI API</code><code>Next.js</code><code>PostgreSQL</code></div>
+        <div class="p-links"><a href="#">github</a><a href="#">live</a></div>
+        <a class="case-btn" href="project-merix.html">case study →</a>
+      </article>
+      <article class="proj rv">
+        <h3>Platewise</h3>
+        <p>Ask your menu anything. RAG system that lets restaurant customers query the menu in natural language.</p>
+        <div class="stack"><code>LangChain</code><code>Pinecone</code><code>Next.js</code><code>shadcn/ui</code></div>
+        <div class="p-links"><a href="#">github</a><a href="#">live</a></div>
+        <a class="case-btn" href="#">case study →</a>
+      </article>
+      <article class="proj rv">
+        <h3>Yourtomo</h3>
+        <p>A GitHub Action that renders a pixel-cat SVG reacting to your real commit history. Your profile, but with a cat.</p>
+        <div class="stack"><code>TypeScript</code><code>GitHub Actions</code><code>SVG</code></div>
+        <div class="p-links"><a href="#">github</a></div>
+        <a class="case-btn" href="#">case study →</a>
+      </article>
+    </div>
+  </section>
+  <section id="achievements" aria-labelledby="ach-h">
+    <div class="sec-head rv">
+      <h2 id="ach-h">Achievements</h2>
+    </div>
+    <ul class="ach-list rv">
+      <li><span class="ach-place">1st</span> <span class="ach-event">Hackathon Name</span> <span class="ach-year">2025</span></li>
+      <li><span class="ach-place">Top 10%</span> <span class="ach-event">Another Event</span> <span class="ach-year">2024</span></li>
+      <li><span class="ach-place">100-day</span> <span class="ach-event">coding streak</span> <span class="ach-year">2025</span></li>
+    </ul>
+  </section>
+  <section id="about" aria-labelledby="about-h">
+    <div class="sec-head rv">
+      <h2 id="about-h">About</h2>
+    </div>
+    <div class="about">
+      <div class="photo" role="img" aria-label="Portrait of Shubham — placeholder">S</div>
+      <div class="rv">
+        <p>I'm Shubham — a third-year <strong>B.Tech + M.Tech IT student at IIITM Gwalior</strong>. I got into programming through competitive programming (prsdx on Codeforces), stayed for the systems, and now spend most of my time building AI products and writing about what I learn.</p>
+        <p>Right now I'm deep in retrieval pipelines and embedding trade-offs, rebuilding Merix's matching engine, and working through <strong>Designing Data-Intensive Applications</strong> one chapter at a time — with notes, in public.</p>
+        <ul class="facts">
+          <li>Gwalior, India</li>
+          <li>graduating 2027</li>
+          <li>prsdx · cf 1847</li>
+          <li>github.com/prsdx</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+  <section id="writing" aria-labelledby="writing-h">
+    <div class="sec-head rv">
+      <h2 id="writing-h">Latest writing</h2>
+      <a href="writing.html">all writing →</a>
+    </div>
+    <ul class="posts rv">
+      <li><time datetime="2026-07-15">Jul 15, 2026</time><span class="tag">AI/ML</span><a href="#">How I Built a RAG System That Actually Works</a></li>
+      <li><time datetime="2026-06-30">Jun 30, 2026</time><span class="tag">Codeforces</span><a href="#">What 200 Codeforces Problems Taught Me About Engineering</a></li>
+      <li><time datetime="2026-05-20">May 20, 2026</time><span class="tag">Systems</span><a href="#">Designing an AI Matching Pipeline from Scratch</a></li>
+    </ul>
+  </section>
+
+  <section id="now" aria-labelledby="now-h">
+    <div class="sec-head rv">
+      <h2 id="now-h">Now</h2>
+    </div>
+    <div class="nowstrip rv">
+      <div class="now">
+        <span class="label"><span class="pulse" aria-hidden="true"></span> this week</span>
+        <p>Shipping Merix's matching-pipeline v2, grinding toward Codeforces 1900, and writing up what Platewise taught me about RAG failure modes.</p>
+      </div>
+      <div class="open">
+        <span class="label">open to</span>
+        <p><strong>Summer 2027 internships</strong> (backend / AI), open-source collaboration, and research-adjacent projects. If you're hiring a builder who writes and reads without being told to —</p>
+        <a class="mailto" href="#">get in touch →</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer id="contact">
+  <div class="footer-top">
+    <span class="footer-name">Shubham.</span>
+    <span class="footer-loc">Built at IIITM Gwalior, India. Last updated Sep 2026.</span>
+  </div>
+  <div class="footer-links">
+    <a href="#">github</a> · <a href="#">x</a> · <a href="#">codeforces</a> · <a href="#">rss</a> · <a href="mailto:shubham@example.com">email</a>
+  </div>
+</footer>
+
+<script>
+  const btn = document.getElementById('menuBtn');
+  const navEl = document.getElementById('mainNav');
+  btn.addEventListener('click', () => {
+    const open = navEl.classList.toggle('open');
+    btn.setAttribute('aria-expanded', open);
+  });
+  navEl.addEventListener('click', e => { if (e.target.tagName === 'A') navEl.classList.remove('open'); });
+
+  const items = document.querySelectorAll('.rv');
+  items.forEach((el, i) => el.style.transitionDelay = (i % 6) * 70 + 'ms');
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  items.forEach(el => io.observe(el));
+
+  const links = [...navEl.querySelectorAll('a[href^="#"]')];
+  const secs = links.map(a => document.querySelector(a.hash)).filter(Boolean);
+  const spy = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) links.forEach(a => a.classList.toggle('active', a.hash === '#' + e.target.id));
+    });
+  }, { rootMargin: '-30% 0px -55% 0px' });
+  secs.forEach(s => spy.observe(s));
+</script>
+</body>
+</html>
