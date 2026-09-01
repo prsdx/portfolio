@@ -1,18 +1,46 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import Header from '../../components/Header.astro';
-import Footer from '../../components/Footer.astro';
+import { getCollection } from 'astro:content';
+import BlogPostLayout from '../../layouts/BlogPostLayout.astro';
 
-// Placeholder — real content wiring in task 03/05
-export function getStaticPaths() {
-  return [];
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  return posts.map((post) => ({
+    params: { slug: post.id.replace(/\.mdx$/, '') },
+    props: { post },
+  }));
 }
+
+function readingTime(text: string): string {
+  const words = text.split(/\s+/).length;
+  const minutes = Math.max(1, Math.round(words / 200));
+  return `~${minutes} min read`;
+}
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+
+// Compute prev/next from all posts (same as listing order)
+const allPosts = await getCollection('blog', ({ data }) => !data.draft);
+const sorted = allPosts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+const idx = sorted.findIndex((p) => p.id === post.id);
+
+const prevPost = idx < sorted.length - 1
+  ? { title: sorted[idx + 1].data.title, href: `/blog/${sorted[idx + 1].id.replace(/\.mdx$/, '')}` }
+  : null;
+
+const nextPost = idx > 0
+  ? { title: sorted[idx - 1].data.title, href: `/blog/${sorted[idx - 1].id.replace(/\.mdx$/, '')}` }
+  : null;
 ---
 
-<BaseLayout title="Post — Shubham" description="Blog post.">
-  <Header />
-  <main>
-    <h1>Post</h1>
-  </main>
-  <Footer />
-</BaseLayout>
+<BlogPostLayout
+  title={post.data.title}
+  description={post.data.excerpt}
+  date={post.data.date.toISOString()}
+  readingTime={readingTime(post.body ?? '')}
+  tags={post.data.tags}
+  prevPost={prevPost}
+  nextPost={nextPost}
+>
+  <Content />
+</BlogPostLayout>

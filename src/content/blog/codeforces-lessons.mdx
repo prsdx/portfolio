@@ -1,0 +1,33 @@
+---
+title: "What 200 Codeforces Problems Taught Me"
+date: 2026-06-30
+tags: ["competitive programming", "Codeforces"]
+excerpt: "The skills transfer more than I expected — and in ways I didn't predict."
+draft: false
+---
+
+I hit 200 problems solved on Codeforces last month. Not a milestone most people care about, but it's one I didn't think I'd reach when I started a year ago with a rating of 800 and no idea what a segment tree was.
+
+## The obvious stuff
+
+Yes, my DSA got better. I can spot a sliding window problem from the constraints alone now. I stopped panicking when I see "2 ≤ n ≤ 2·10⁵" because I know that means O(n log n) or better. Binary search feels natural, not like a trick.
+
+But those are the things everyone tells you competitive programming teaches. What surprised me were the less obvious lessons.
+
+## Debugging under pressure
+
+In a contest, you have two hours and your code is wrong. No debugger, no console.log on some hidden test case. You learn to debug with your brain: trace the logic, find the invariant that's breaking, question every assumption. After doing this 200 times, I debug production code differently. I'm slower to reach for console.log and faster to ask "what should be true here that isn't?"
+
+## Reading other people's code
+
+After every contest, I read editorials and top-rated solutions. Some are incomprehensible C++ with single-letter variables. Some are elegant — ten lines that do what mine did in fifty. Reading bad code teaches you patience. Reading good code teaches you patterns. Both skills transfer directly to code reviews and open-source contributions.
+
+## Knowing when to quit
+
+The hardest lesson: not every problem is solvable by you right now. I spent 4 hours on a 2200-rated problem once because I was too stubborn to read the editorial. I solved nothing and learned nothing. Now I set a 45-minute timer. If I haven't made progress by then, I read the solution, understand the technique, and try a similar problem tomorrow. That's not giving up — it's efficient learning.
+
+## What surprised me most
+
+Competitive programming taught me to design algorithms backward from the constraints. Given n ≤ 100, brute force is fine. Given n ≤ 10⁵, you need O(n log n). Given n ≤ 10⁹, you need O(log n) or O(1). This constraint-first thinking now shows up in how I design APIs and choose data structures for real projects.
+
+I'm not done. 200 problems is just the warm-up. But the person who started grinding problems a year ago wouldn't recognize who I am now — and that's exactly the point.

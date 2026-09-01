@@ -1,0 +1,53 @@
+---
+title: "How I Built a RAG-Based Menu Assistant"
+date: 2026-07-15
+tags: ["AI/ML", "RAG", "LangChain"]
+excerpt: "Building Platewise taught me that RAG systems fail in ways you don't expect."
+draft: false
+---
+
+I spent my last semester building Platewise, a RAG-powered menu assistant that lets restaurant customers ask questions about the menu in plain English. "What's the spiciest vegetarian dish under $15?" or "Does the chef use peanut oil in anything?" — things that a PDF menu can't answer.
+
+## Why RAG?
+
+Restaurant menus are structured but inconsistent. Some list ingredients in bullet points, others bury them in paragraphs. A simple keyword search would miss "vindaloo" when someone asks for "spicy." I needed something that understood intent, not just keywords.
+
+Retrieval-Augmented Generation seemed like the right fit: chunk the menu, embed each chunk, store in a vector database, and let an LLM stitch answers from the retrieved context. No fine-tuning needed, just good retrieval.
+
+## The pipeline
+
+The system works in three stages. First, menu ingestion: parse the menu (PDF or HTML) into structured chunks — each dish becomes its own chunk with name, description, price, and dietary tags. I used LangChain's `RecursiveCharacterTextSplitter` with a 512-token chunk size, which was small enough for precision but large enough for context.
+
+```python
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain.embeddings import OpenAIEmbeddings
+import pinecone
+
+splitter = RecursiveCharacterTextSplitter(
+    chunk_size=512,
+    chunk_overlap=50,
+    separators=["\n\n", "\n", ". ", " "]
+)
+
+chunks = splitter.split_text(menu_text)
+embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
+vectors = embeddings.embed_documents(chunks)
+
+pinecone.upsert(vectors=zip(ids, vectors, metadata))
+```
+
+Second, retrieval: when a query comes in, embed it with the same model and run a similarity search against Pinecone. I limited results to the top 5 chunks and used a similarity threshold of 0.75 — anything below that was probably noise.
+
+Third, generation: the retrieved chunks plus the user query get fed to GPT-4o-mini with a tight system prompt. I made the prompt return "I'm not sure — could you rephrase?" when confidence was low, which avoided hallucinations better than I expected.
+
+## What broke
+
+The hard parts weren't the RAG pipeline itself. They were the edge cases. Menus with typos ("panneer" vs "paneer") broke chunk boundaries. Thai menus with long descriptive names ("Pad Kra Pao Gai Kai Dao") confused the splitter. And the biggest surprise: users asked about things not on the menu — "Do you have a kids' section?" or "Can I swap the rice for salad?" The RAG system had no answer for those, and the LLM would politely invent one.
+
+I added a pre-retrieval classifier that checks if the query is even about menu items. If not, it routes to a fallback message. That one check cut hallucination by about 60%.
+
+## What I'd do differently
+
+Looking back, I'd start with a simpler keyword search baseline before jumping to embeddings. I'd also invest more time in menu parsing — the quality of retrieval depends entirely on how well you split the source. A bad chunk boundary means a good answer lost forever.
+
+The project taught me that RAG isn't magic. It's plumbing with an LLM at the end. The retrieval part matters more than the generation part, and the parsing part matters most of all.

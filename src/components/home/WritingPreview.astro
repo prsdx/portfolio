@@ -1,0 +1,84 @@
+---
+interface Post {
+  date: string;
+  iso: string;
+  tag: string;
+  title: string;
+  href: string;
+}
+
+const posts: Post[] = [
+  { date: "Jul 15, 2026", iso: "2026-07-15", tag: "AI/ML", title: "How I Built a RAG System That Actually Works", href: "#" },
+  { date: "Jun 30, 2026", iso: "2026-06-30", tag: "Codeforces", title: "What 200 Codeforces Problems Taught Me About Engineering", href: "#" },
+  { date: "May 20, 2026", iso: "2026-05-20", tag: "Systems", title: "Designing an AI Matching Pipeline from Scratch", href: "#" },
+];
+---
+<div class="sec-head rv">
+  <h2 id="writing-h">Latest writing</h2>
+  <a href="/blog">all writing →</a>
+</div>
+<ul class="posts rv">
+  {posts.map((p) => (
+    <li>
+      <time datetime={p.iso}>{p.date}</time>
+      <span class="tag">{p.tag}</span>
+      <a href={p.href}>{p.title}</a>
+    </li>
+  ))}
+</ul>
+
+<style>
+  .sec-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 18px;
+  }
+  h2 {
+    font-size: .78rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+  }
+  .sec-head a {
+    font-family: var(--font-mono);
+    font-size: .78rem;
+    color: var(--muted);
+    text-decoration: none;
+  }
+  .sec-head a:hover { color: var(--accent); }
+  .posts { list-style: none; border-top: 1px solid var(--border); }
+  .posts li {
+    display: flex;
+    gap: 20px;
+    padding: 13px 2px;
+    border-bottom: 1px solid var(--border);
+    align-items: baseline;
+  }
+  .posts time {
+    font-family: var(--font-mono);
+    font-size: .75rem;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+    min-width: 88px;
+  }
+  .posts a {
+    color: var(--text);
+    text-decoration: none;
+    font-size: .95rem;
+  }
+  .posts a:hover { color: var(--accent); }
+  .posts .tag {
+    font-family: var(--font-mono);
+    font-size: .65rem;
+    padding: 2px 6px;
+    background: var(--chip);
+    color: var(--muted);
+    border-radius: 3px;
+  }
+  .posts .tag:hover { color: var(--accent2); }
+  @media (max-width: 768px) {
+    .posts li { flex-direction: column; gap: 2px; }
+  }
+</style>

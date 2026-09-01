@@ -1,13 +1,79 @@
 ---
+import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
+import PostCard from '../../components/blog/PostCard.astro';
+
+const allPosts = await getCollection('blog', ({ data }) => !data.draft);
+const posts = allPosts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+function readingTime(text: string): string {
+  const words = text.split(/\s+/).length;
+  const minutes = Math.max(1, Math.round(words / 200));
+  return `~${minutes} min read`;
+}
 ---
 
-<BaseLayout title="Blog — Shubham" description="Writing by Shubham.">
+<BaseLayout title="Blog — Shubham" description="Writing by Shubham. Thoughts on building things, competitive programming, and what I'm learning.">
   <Header />
   <main>
-    <h1>Blog</h1>
+    <section class="blog-list">
+      <div class="list-header">
+        <h1>Blog</h1>
+        <p class="list-sub">Thoughts on building things, competitive programming, and what I'm learning.</p>
+      </div>
+
+      {
+        posts.length === 0 ? (
+          <p class="empty">No posts yet. Check back soon.</p>
+        ) : (
+          <div class="posts">
+            {posts.map((post) => (
+              <PostCard
+                title={post.data.title}
+                date={post.data.date.toISOString()}
+                excerpt={post.data.excerpt}
+                tags={post.data.tags}
+                href={`/blog/${post.id.replace(/\.mdx$/, '')}`}
+                readingTime={readingTime(post.body ?? '')}
+              />
+            ))}
+          </div>
+        )
+      }
+    </section>
   </main>
   <Footer />
 </BaseLayout>
+
+<style>
+  main {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 48px 24px 0;
+  }
+
+  .list-header {
+    margin-bottom: 32px;
+  }
+
+  .list-header h1 {
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.01em;
+    margin-bottom: 8px;
+  }
+
+  .list-sub {
+    color: var(--muted);
+    font-size: .95rem;
+    line-height: 1.6;
+  }
+
+  .empty {
+    color: var(--muted);
+    font-size: .9rem;
+  }
+</style>
