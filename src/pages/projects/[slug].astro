@@ -1,18 +1,255 @@
 ---
+import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 
-// Placeholder — real content wiring in a later task
-export function getStaticPaths() {
-  return [];
+export async function getStaticPaths() {
+  const projects = await getCollection('projects', ({ data }) => !data.draft);
+  return projects.map((p) => ({
+    params: { slug: p.id.replace(/\.mdx$/, '') },
+    props: { project: p },
+  }));
 }
+
+const { project } = Astro.props;
+const { Content } = await project.render();
+
+// Compute prev/next from all projects
+const allProjects = await getCollection('projects', ({ data }) => !data.draft);
+const idx = allProjects.findIndex((p) => p.id === project.id);
+
+const prevProject = idx < allProjects.length - 1
+  ? { title: allProjects[idx + 1].data.title, href: `/projects/${allProjects[idx + 1].id.replace(/\.mdx$/, '')}` }
+  : null;
+
+const nextProject = idx > 0
+  ? { title: allProjects[idx - 1].data.title, href: `/projects/${allProjects[idx - 1].id.replace(/\.mdx$/, '')}` }
+  : null;
 ---
 
-<BaseLayout title="Project — Shubham" description="Project case study.">
+<BaseLayout title={`${project.data.title} — Shubham`} description={project.data.excerpt}>
   <Header />
-  <main>
-    <h1>Project</h1>
+
+  <main class="case-study">
+    <nav class="crumb rv">
+      <a href="/projects">projects</a> &rarr; <span>{project.data.title.split(' — ')[0]}</span>
+    </nav>
+
+    <header class="p-head rv">
+      <h1>{project.data.title}</h1>
+      <p class="sub">{project.data.excerpt}</p>
+      <div class="meta-row">
+        <span class="meta-item">{new Date(project.data.date).toLocaleDateString('en-US', { year: 'numeric', month: 'short' })}</span>
+        {
+          project.data.tags.length > 0 && (
+            <div class="meta-tags">
+              {project.data.tags.map((t: string) => <code>{t}</code>)}
+            </div>
+          )
+        }
+      </div>
+    </header>
+
+    <article class="body rv">
+      <Content />
+    </article>
+
+    <nav class="next-links rv" aria-label="More projects">
+      {prevProject ? (
+        <a href={prevProject.href} rel="prev">&larr; {prevProject.title}</a>
+      ) : <span />}
+      {nextProject ? (
+        <a href={nextProject.href} rel="next">{nextProject.title} &rarr;</a>
+      ) : <span />}
+    </nav>
+
+    <div class="back rv">
+      <a href="/projects">&larr; all projects</a>
+    </div>
   </main>
+
   <Footer />
 </BaseLayout>
+
+<style>
+  main.case-study {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 24px 16px;
+  }
+
+  .crumb {
+    padding: 28px 0 0;
+    font-family: var(--font-mono);
+    font-size: .78rem;
+    color: var(--muted);
+  }
+
+  .crumb a {
+    color: var(--muted);
+    text-decoration: none;
+  }
+
+  .crumb a:hover { color: var(--accent); }
+
+  .p-head {
+    padding: 20px 0 8px;
+  }
+
+  .p-head h1 {
+    font-size: clamp(1.8rem, 4.5vw, 2.5rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+  }
+
+  .p-head .sub {
+    margin-top: 10px;
+    color: var(--muted);
+    font-size: 1rem;
+    max-width: 38em;
+    line-height: 1.6;
+  }
+
+  .meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 24px;
+    margin-top: 18px;
+    padding: 14px 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    align-items: center;
+  }
+
+  .meta-item {
+    font-family: var(--font-mono);
+    font-size: .82rem;
+    color: var(--text);
+  }
+
+  .meta-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .meta-tags code {
+    font-family: var(--font-mono);
+    font-size: .7rem;
+    background: var(--chip);
+    padding: 2px 8px;
+    border-radius: 4px;
+    color: var(--muted);
+  }
+
+  .body {
+    max-width: 65ch;
+    font-size: 17px;
+    line-height: 1.75;
+    color: var(--text);
+    padding-top: 32px;
+  }
+
+  .body :global(h2) {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-top: 2.2em;
+    margin-bottom: .6em;
+    line-height: 1.3;
+  }
+
+  .body :global(h3) {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-top: 1.8em;
+    margin-bottom: .5em;
+  }
+
+  .body :global(p) { margin-bottom: 1.2em; }
+
+  .body :global(ul),
+  .body :global(ol) {
+    margin-bottom: 1.2em;
+    padding-left: 1.5em;
+  }
+
+  .body :global(li) { margin-bottom: .4em; }
+  .body :global(li::marker) { color: var(--muted); }
+
+  .body :global(a) {
+    color: var(--accent2);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .body :global(a:hover) { color: var(--accent); }
+
+  .body :global(blockquote) {
+    border-left: 3px solid var(--accent);
+    padding-left: 16px;
+    margin: 1.5em 0;
+    color: var(--muted);
+    font-style: italic;
+  }
+
+  .body :global(strong) { font-weight: 600; }
+
+  .body :global(pre) {
+    margin: 1.5em 0;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    overflow-x: auto;
+    font-size: .85rem;
+    line-height: 1.6;
+    background: var(--surface) !important;
+  }
+
+  .body :global(pre code) {
+    font-family: var(--font-mono);
+    display: block;
+    padding: 18px 20px;
+    background: none;
+    white-space: pre;
+  }
+
+  .next-links {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 56px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    gap: 16px;
+  }
+
+  .next-links a {
+    font-family: var(--font-mono);
+    font-size: .82rem;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color .15s;
+  }
+
+  .next-links a:hover { color: var(--accent); }
+
+  .back {
+    margin-top: 20px;
+    margin-bottom: 32px;
+  }
+
+  .back a {
+    font-family: var(--font-mono);
+    font-size: .82rem;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color .15s;
+  }
+
+  .back a:hover { color: var(--accent); }
+
+  @media (max-width: 768px) {
+    .next-links { flex-direction: column; }
+  }
+</style>

@@ -1,0 +1,48 @@
+---
+title: "Platewise — RAG-Based Menu Assistant"
+date: 2026-08-01
+excerpt: "Building Platewise taught me that RAG systems fail in ways you don't expect. Retrieval isn't the hard part — knowing when to retrieve at all is."
+tags: ["AI/ML", "RAG", "LangChain"]
+draft: false
+---
+
+## The problem
+
+Restaurant menus are terrible at answering questions. "What can I eat that's under 300 calories?" or "Do you have anything gluten-free with chicken?" — these are simple queries that a PDF menu can't handle. I wanted to build something that could.
+
+The naive approach is: embed the menu, embed the user query, cosine-similarity, done. That approach fails in ways nobody warns you about.
+
+## What I built
+
+Platewise is a RAG pipeline that ingests restaurant menus (PDFs, web pages, plain text) and answers natural-language questions about them.
+
+The pipeline:
+1. **Ingest** — Menu text is chunked by section (appetizers, mains, desserts), not by character count. Section boundaries matter for relevance.
+2. **Embed** — Each chunk gets embedded via a sentence-transformer model and stored in ChromaDB.
+3. **Retrieve** — User query is embedded, top-k chunks are pulled.
+4. **Generate** — The LLM gets the retrieved chunks as context and answers with specific menu items, prices, and dietary info.
+
+The frontend is a clean chat interface where you paste a menu link and start asking questions.
+
+## How it works
+
+```
+menu PDF/URL
+  → parser → section-aware chunking
+  → embedder (sentence-transformers) → ChromaDB vector store
+  → user query → embed → top-k retrieval
+  → LLM (with context + retrieved chunks) → answer
+  → FastAPI → chat UI
+```
+
+## The hard parts
+
+**Retrieval isn't the hard part — knowing when not to retrieve is.** Early versions would embed every query and return results even when the menu had nothing relevant. Now there's a relevance gate before retrieval that catches "sorry, not on this menu" early.
+
+**Section boundaries are critical.** Chunking by token count loses structure. "Contains nuts" in the dessert section doesn't answer a question about the main course. Section-aware chunking fixed 80% of the "wrong item" answers.
+
+**Embedding models drift.** The same query against the same menu gave slightly different rankings across model versions. This is subtle but real — I added version pinning and a small eval set to catch regressions.
+
+## Where it stands
+
+Working prototype with a few restaurant menus. The retrieval layer is solid; the LLM generation sometimes hallucinates prices and dietary info. Next step is adding structured menu data (JSON schema) to ground the generation, and a better eval pipeline to measure answer accuracy systematically.

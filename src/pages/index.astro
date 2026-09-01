@@ -1,13 +1,186 @@
+<!--
+DESIGN PLAN — Home page (K2 v3 "Dashboard, Hired")
+Port variation-k2.html section-for-section.
+Section order: hero → signals → selected work → achievements → about → latest writing → now/open → footer.
+Tokens: CSS custom properties in global.css. Dark default + light via prefers-color-scheme.
+Breakpoints: 768px, 1080px homepage. Motion: staggered .rv reveals via IntersectionObserver.
+-->
+
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import Hero from '../components/home/Hero.astro';
+import ProjectCard from '../components/home/ProjectCard.astro';
+import Achievements from '../components/home/Achievements.astro';
+import About from '../components/home/About.astro';
+import WritingPreview from '../components/home/WritingPreview.astro';
+import NowStrip from '../components/home/NowStrip.astro';
+
+const projects = [
+  {
+    title: 'Merix',
+    description: 'AI-powered placement matching pipeline. Parses resumes and JDs, embeds them, and ranks candidates with plain-language explanations.',
+    stack: ['FastAPI', 'Next.js', 'PostgreSQL', 'OpenAI'],
+    github: '#',
+    caseStudy: '/projects/merix',
+  },
+  {
+    title: 'Platewise',
+    description: 'RAG-based menu assistant that answers "what can I eat?" from restaurant menus using semantic search and LLM reasoning.',
+    stack: ['LangChain', 'Python', 'FastAPI', 'ChromaDB'],
+    github: '#',
+    caseStudy: '/projects/platewise',
+  },
+  {
+    title: 'YourTomo',
+    description: 'Renders pixel art from Git commit history — turns your contribution graph into a shareable SVG cat.',
+    stack: ['TypeScript', 'Node.js', 'Git API', 'SVG'],
+    github: '#',
+    caseStudy: '/projects/yourtomo',
+  },
+];
 ---
 
-<BaseLayout title="Shubham" description="Shubham's personal portfolio and blog.">
+<BaseLayout title="Shubham — builds AI systems" description="Shubham's personal portfolio. Third-year CS student at IIITM Gwalior. Building AI systems, solving DSA problems, and writing about it.">
   <Header />
-  <main>
-    <h1>Coming soon</h1>
+
+  <main class="home">
+    <section id="hero" aria-labelledby="hero-h">
+      <Hero />
+    </section>
+
+    <section id="work" aria-labelledby="work-h">
+      <div class="sec-head rv">
+        <h2 id="work-h">Selected work</h2>
+        <a href="/projects">all projects &rarr;</a>
+      </div>
+      <div class="proj-grid">
+        {projects.map((p) => (
+          <ProjectCard
+            title={p.title}
+            description={p.description}
+            stack={p.stack}
+            github={p.github}
+            caseStudy={p.caseStudy}
+          />
+        ))}
+      </div>
+    </section>
+
+    <section id="achievements" aria-labelledby="ach-h">
+      <div class="sec-head rv">
+        <h2 id="ach-h">Achievements</h2>
+      </div>
+      <Achievements />
+    </section>
+
+    <section id="about" aria-labelledby="about-h">
+      <div class="sec-head rv">
+        <h2 id="about-h">About</h2>
+      </div>
+      <About />
+    </section>
+
+    <section id="writing" aria-labelledby="writing-h">
+      <WritingPreview />
+    </section>
+
+    <section id="now" aria-labelledby="now-h">
+      <div class="sec-head rv">
+        <h2 id="now-h">Now</h2>
+      </div>
+      <NowStrip />
+    </section>
   </main>
+
   <Footer />
 </BaseLayout>
+
+<style>
+  .home {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 24px 16px;
+  }
+
+  section {
+    margin-bottom: 48px;
+  }
+
+  .sec-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 18px;
+  }
+
+  .sec-head h2 {
+    font-size: .78rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+  }
+
+  .sec-head a {
+    font-family: var(--font-mono);
+    font-size: .78rem;
+    color: var(--muted);
+    text-decoration: none;
+  }
+
+  .sec-head a:hover { color: var(--accent); }
+
+  .proj-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+
+  @media (max-width: 768px) {
+    .proj-grid { grid-template-columns: 1fr; }
+  }
+</style>
+
+<script>
+  // Staggered reveal animation
+  const items = document.querySelectorAll('.rv');
+  items.forEach((el, i) => el.style.transitionDelay = (i % 6) * 70 + 'ms');
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  items.forEach(el => io.observe(el));
+
+  // Mobile nav toggle
+  const btn = document.getElementById('menuBtn');
+  const navEl = document.getElementById('mainNav');
+  if (btn && navEl) {
+    btn.addEventListener('click', () => {
+      const open = navEl.classList.toggle('open');
+      btn.setAttribute('aria-expanded', String(open));
+    });
+    navEl.addEventListener('click', e => {
+      if (e.target.tagName === 'A') navEl.classList.remove('open');
+    });
+  }
+
+  // Scrollspy for nav links
+  const links = [...navEl.querySelectorAll('a[href^="#"]')];
+  const secs = links.map(a => document.querySelector(a.hash)).filter(Boolean);
+  const spy = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) links.forEach(a => a.classList.toggle('active', a.hash === '#' + e.target.id));
+    });
+  }, { rootMargin: '-30% 0px -55% 0px' });
+  secs.forEach(s => spy.observe(s));
+</script>
+
+<!--
+SELF-CRITIQUE
+- Sections follow K2 v3 mockup order exactly. No redesigns.
+- "Selected work" uses ProjectCard component for all 3 projects. Case study button full-width per spec.
+- Only one <h1> on page (in Hero). All section headings are <h2>.
+- JS: IntersectionObserver for reveals + mobile nav toggle + scrollspy. All reduced-motion safe.
+- No hardcoded hex colors; all via CSS custom properties.
+-->

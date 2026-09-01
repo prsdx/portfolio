@@ -2,12 +2,117 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+
+interface Tool { name: string; note: string; }
+
+const categories: { title: string; items: Tool[] }[] = [
+  { title: 'Editor', items: [{ name: 'VS Code', note: 'Fast, extensible, and I know the keyboard shortcuts in my sleep.' }] },
+  { title: 'Terminal', items: [{ name: 'Warp', note: 'Modern terminal with AI features. Makes CLI work feel less like archaeology.' }] },
+  { title: 'Languages', items: [
+    { name: 'TypeScript', note: 'My daily driver for web work. The type system catches what my brain misses.' },
+    { name: 'Python', note: 'Go-to for AI/ML and scripting. FastAPI is my preferred backend framework.' },
+    { name: 'C++', note: 'Used for competitive programming. Taught me what a pointer actually is.' },
+  ]},
+  { title: 'Frameworks', items: [
+    { name: 'Next.js', note: 'For full-stack React apps. App Router took some getting used to but I prefer it now.' },
+    { name: 'Astro', note: 'Powers this site. Zero JS by default, content-first — exactly what a portfolio should be.' },
+    { name: 'FastAPI', note: 'Fast, well-documented, and the dependency injection system is genuinely good.' },
+  ]},
+  { title: 'AI Tools', items: [
+    { name: 'Claude', note: 'My primary AI assistant for coding and writing. Good at understanding context, not just generating text.' },
+    { name: 'Cline', note: 'VS Code extension that helps me code faster. Like pair programming with someone who never sleeps.' },
+  ]},
+  { title: 'Design', items: [{ name: 'Figma', note: 'For mockups and UI exploration. Still learning, but I can get ideas down fast.' }] },
+  { title: 'Deploy', items: [
+    { name: 'Vercel', note: 'Deploys this site. Git push → live in seconds. The free tier is generous.' },
+    { name: 'GitHub Actions', note: 'CI/CD for everything. Runs my content fetch pipeline and build checks.' },
+  ]},
+];
 ---
 
-<BaseLayout title="Uses — Shubham" description="Tools and setup Shubham uses.">
+<BaseLayout title="Uses — Shubham" description="The tools, languages, and setup Shubham uses daily. No ratings, no stars — just honest descriptions.">
   <Header />
+
   <main>
-    <h1>Uses</h1>
+    <div class="page-head">
+      <h1>Uses</h1>
+      <p class="sub">The tools I actually use every day. No ratings, no stars — just honest descriptions of what works for me.</p>
+    </div>
+
+    {categories.map((cat) => (
+      <section class="rv">
+        <h2>{cat.title}</h2>
+        <ul class="tool-list">
+          {cat.items.map((t) => (
+            <li>
+              <strong>{t.name}</strong>
+              <span>{t.note}</span>
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))}
   </main>
+
   <Footer />
 </BaseLayout>
+
+<style>
+  main {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 48px 24px 0;
+  }
+
+  .page-head { margin-bottom: 36px; }
+
+  .page-head h1 {
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.01em;
+    margin-bottom: 8px;
+  }
+
+  .page-head .sub {
+    color: var(--muted);
+    font-size: .95rem;
+    line-height: 1.6;
+  }
+
+  section { margin-bottom: 36px; }
+
+  section h2 {
+    font-size: .78rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+    margin-bottom: 16px;
+  }
+
+  .tool-list {
+    list-style: none;
+  }
+
+  .tool-list li {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .tool-list strong {
+    font-family: var(--font-mono);
+    font-size: .85rem;
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  .tool-list span {
+    color: var(--muted);
+    font-size: .88rem;
+    line-height: 1.5;
+  }
+</style>

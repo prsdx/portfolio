@@ -1,0 +1,53 @@
+---
+// Signals strip — 4 stat cards
+const signals = [
+  { value: "1847", label: "codeforces · expert", href: "https://codeforces.com/profile/prsdx" },
+  { value: "500+", label: "dsa problems · cf + lc + cc", href: null },
+  { value: "300+", label: "github · contributions", href: "https://github.com/prsdx" },
+  { value: "3", label: "products shipped", href: null },
+];
+---
+<div class="signals rv" role="list" aria-label="Key numbers">
+  {signals.map((s) =>
+    s.href ? (
+      <a class="sig" role="listitem" href={s.href}><b>{s.value}</b><span>{s.label}</span></a>
+    ) : (
+      <div class="sig" role="listitem"><b>{s.value}</b><span>{s.label}</span></div>
+    )
+  )}
+</div>
+
+<style>
+  .signals {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin: 36px 0 8px;
+  }
+  .sig {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 20px;
+    transition: border-color .15s;
+    color: var(--text);
+    text-decoration: none;
+    display: block;
+  }
+  .sig:hover { border-color: var(--border-hover); box-shadow: var(--shadow); }
+  .sig b {
+    display: block;
+    font-size: 1.4rem;
+    font-weight: 700;
+    font-family: var(--font-mono);
+  }
+  .sig span {
+    font-size: .72rem;
+    color: var(--muted);
+    letter-spacing: .05em;
+    text-transform: uppercase;
+  }
+  @media (max-width: 768px) {
+    .signals { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>

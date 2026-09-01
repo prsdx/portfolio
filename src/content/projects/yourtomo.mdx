@@ -1,0 +1,47 @@
+---
+title: "YourTomo — Git Contribution Art"
+date: 2026-06-15
+excerpt: "Turning commit metadata into pixel art without getting rate-limited into oblivion. A weekend project that taught me about API constraints and caching."
+tags: ["Full-Stack", "TypeScript", "Git"]
+draft: false
+---
+
+## The problem
+
+GitHub contribution graphs are boring. Green squares on a grid. I wanted to turn someone's commit history into something more personal — a pixel-art avatar generated from their actual contribution patterns, not a random algorithm.
+
+The challenge: GitHub's API rate-limits aggressively (5,000 requests/hour for authenticated users), and contribution data isn't available through the REST API directly. You have to scrape the contribution graph SVG or use the GraphQL API's contribution collection.
+
+## What I built
+
+YourTomo generates a pixel-art image (cat, dog, or custom shape) from a user's Git contribution history. It maps contribution intensity to pixel brightness and commit frequency to pixel density, creating a unique "fingerprint" avatar.
+
+The pipeline:
+1. Fetch contribution data via GitHub's GraphQL API (contribution calendar).
+2. Normalize the data into a grid of intensity values.
+3. Map each cell to a pixel in a template shape.
+4. Render the final SVG with customizable colors and dimensions.
+5. Serve it as a shareable image URL.
+
+## How it works
+
+```
+GitHub username
+  → GraphQL API (contribution calendar, 365 days)
+  → normalize to intensity grid
+  → apply template mask (cat shape, 48x48)
+  → render SVG with pixel density → brightness mapping
+  → cache result (24h TTL) → serve via URL
+```
+
+## The hard parts
+
+**Rate limiting is real.** Each generation pulls a full year of contribution data. I cache every result with a 24-hour TTL in Redis, so repeated requests for the same user don't hit GitHub. The cache-warming is lazy — first request is slow, subsequent ones are instant.
+
+**The GraphQL contribution calendar has quirks.** The `contributionCalendar` field returns weeks as arrays of days, but the start/end dates aren't always aligned to calendar weeks. Normalizing this into a consistent grid required careful date math.
+
+**SVG rendering in Node.js is harder than it sounds.** Building SVGs programmatically means dealing with coordinate systems, viewBox calculations, and color mapping — all without a DOM. I used a lightweight SVG string builder that constructs the XML directly.
+
+## Where it stands
+
+Live and working. Generates cats, dogs, and a few template shapes. The caching layer handles rate limits well. Next step: more template shapes and a web UI that lets you preview before sharing. The fun part is watching people discover that their commit pattern makes a surprisingly recognizable cat.

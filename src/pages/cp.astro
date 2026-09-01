@@ -4,10 +4,152 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 ---
 
-<BaseLayout title="CP — Shubham" description="Competitive programming stats.">
+<BaseLayout title="CP — Shubham" description="Shubham's competitive programming stats. Codeforces Expert (1847), 500+ DSA problems solved.">
   <Header />
+
   <main>
-    <h1>CP</h1>
+    <div class="page-head rv">
+      <h1>Competitive Programming</h1>
+    </div>
+
+    <div class="cp-card rv">
+      <a href="https://codeforces.com/profile/prsdx" class="cf-link">
+        <span class="handle">prsdx</span>
+        <span class="platform">codeforces</span>
+      </a>
+      <div class="rating">1847</div>
+      <div class="rank">Expert</div>
+      <div class="stats">
+        <div class="stat">
+          <b>500+</b>
+          <span>problems solved</span>
+        </div>
+        <div class="stat">
+          <b>200+</b>
+          <span>codeforces</span>
+        </div>
+        <div class="stat">
+          <b>Expert</b>
+          <span>max rank</span>
+        </div>
+      </div>
+    </div>
+
+    <section class="rv">
+      <p>I started competitive programming in my first semester at IIITM Gwalior. What began as a way to crack coding interviews turned into something I genuinely enjoy — the satisfaction of optimizing an O(n²) solution down to O(n log n), the pattern recognition that builds over hundreds of problems, the calm of knowing you can break down any problem into something solvable.</p>
+      <p>Competitive programming taught me how to debug under pressure, how to read problem statements carefully (a skill that transfers surprisingly well to reading API docs), and how to write code that's correct the first time. It's not about the rating — it's about the reps. 500+ problems later, I can feel the difference in how I approach every engineering problem.</p>
+      <p><a href="https://codeforces.com/profile/prsdx">View Codeforces profile &rarr;</a></p>
+    </section>
   </main>
+
   <Footer />
 </BaseLayout>
+
+<style>
+  main {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 48px 24px 0;
+  }
+
+  .page-head h1 {
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.01em;
+    margin-bottom: 32px;
+  }
+
+  .cp-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 32px;
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .cf-link {
+    display: inline-flex;
+    gap: 8px;
+    align-items: baseline;
+    text-decoration: none;
+    margin-bottom: 20px;
+  }
+
+  .handle {
+    font-family: var(--font-mono);
+    font-size: 1.1rem;
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  .platform {
+    font-size: .75rem;
+    color: var(--muted);
+  }
+
+  .rating {
+    font-size: 64px;
+    font-weight: 700;
+    font-family: var(--font-mono);
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .rank {
+    font-size: .85rem;
+    color: var(--accent2);
+    font-weight: 600;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    margin-bottom: 28px;
+  }
+
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    border-top: 1px solid var(--border);
+    padding-top: 20px;
+  }
+
+  .stat b {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 1.2rem;
+    color: var(--text);
+    margin-bottom: 2px;
+  }
+
+  .stat span {
+    font-size: .7rem;
+    color: var(--muted);
+    letter-spacing: .05em;
+    text-transform: uppercase;
+  }
+
+  section p {
+    color: var(--muted);
+    font-size: .95rem;
+    line-height: 1.75;
+    margin-bottom: 16px;
+    max-width: 65ch;
+  }
+
+  section a {
+    color: var(--accent2);
+    text-decoration: none;
+    font-family: var(--font-mono);
+    font-size: .85rem;
+    transition: color .15s;
+  }
+
+  section a:hover { color: var(--accent); }
+
+  @media (max-width: 768px) {
+    .stats { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .rating { font-size: 48px; }
+  }
+</style>

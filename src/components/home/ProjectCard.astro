@@ -1,0 +1,82 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  stack: string[];
+  github?: string;
+  live?: string;
+  caseStudy?: string;
+}
+
+const { title, description, stack, github, live, caseStudy } = Astro.props;
+---
+<article class="proj rv">
+  <h3>{title}</h3>
+  <p>{description}</p>
+  <div class="stack">
+    {stack.map((t) => <code>{t}</code>)}
+  </div>
+  <div class="p-links">
+    {github && <a href={github}>github</a>}
+    {live && <a href={live}>live</a>}
+  </div>
+  <a class="case-btn" href={caseStudy ?? "#"}>case study →</a>
+</article>
+
+<style>
+  .proj {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transition: border-color .15s, transform .15s;
+  }
+  .proj:hover {
+    border-color: var(--border-hover);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+  }
+  .proj h3 { font-size: 1.05rem; font-weight: 700; }
+  .proj > p { color: var(--muted); font-size: .88rem; }
+  .stack { display: flex; flex-wrap: wrap; gap: 6px; }
+  .stack code {
+    font-family: var(--font-mono);
+    font-size: .68rem;
+    background: var(--chip);
+    padding: 3px 8px;
+    border-radius: 4px;
+    color: var(--muted);
+  }
+  .p-links {
+    display: flex;
+    gap: 12px;
+    border-top: 1px solid var(--border);
+    padding-top: 12px;
+    margin-top: auto;
+  }
+  .p-links a {
+    font-family: var(--font-mono);
+    font-size: .75rem;
+    color: var(--muted);
+    text-decoration: none;
+  }
+  .p-links a:hover { color: var(--accent); }
+  .case-btn {
+    display: block;
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+    margin-top: 12px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-family: var(--font-mono);
+    font-size: .75rem;
+    color: var(--text);
+    text-decoration: none;
+    transition: border-color .15s, color .15s;
+  }
+  .case-btn:hover { border-color: var(--accent2); color: var(--accent2); }
+</style>

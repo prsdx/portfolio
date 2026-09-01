@@ -1,0 +1,57 @@
+<div class="about">
+  <div class="photo" role="img" aria-label="Portrait of Shubham — placeholder, swap with a real photo at build time">S</div>
+  <div class="rv">
+    <p>I'm Shubham — a third-year <strong>B.Tech + M.Tech IT student at IIITM Gwalior</strong>. I got into programming through competitive programming (prsdx on Codeforces), stayed for the systems, and now spend most of my time building AI products and writing about what I learn.</p>
+    <p>Right now I'm deep in retrieval pipelines and embedding trade-offs, rebuilding Merix's matching engine, and working through <strong>Designing Data-Intensive Applications</strong> one chapter at a time — with notes, in public.</p>
+    <ul class="facts">
+      <li>Gwalior, India</li>
+      <li>graduating 2027</li>
+      <li>prsdx · cf 1847</li>
+      <li>github.com/prsdx</li>
+    </ul>
+  </div>
+</div>
+
+<style>
+  .about {
+    display: grid;
+    grid-template-columns: 150px 1fr;
+    gap: 32px;
+    align-items: start;
+  }
+  .about .photo { width: 150px; }
+  .photo {
+    width: 220px;
+    aspect-ratio: 3/4;
+    border-radius: 12px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-size: 3rem;
+    color: var(--accent);
+  }
+  .about p { color: var(--muted); margin-bottom: 12px; max-width: 56em; }
+  .about p strong { color: var(--text); font-weight: 600; }
+  .facts {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 6px;
+  }
+  .facts li {
+    font-family: var(--font-mono);
+    font-size: .7rem;
+    background: var(--chip);
+    padding: 3px 8px;
+    border-radius: 4px;
+    color: var(--muted);
+  }
+  @media (max-width: 768px) {
+    .about { grid-template-columns: 1fr; justify-items: center; }
+    .about .photo { width: 150px; }
+  }
+</style>

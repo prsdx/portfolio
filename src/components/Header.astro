@@ -2,14 +2,108 @@
 // Nav shell — styling lands in task 02
 ---
 
-<header>
-  <nav aria-label="Main navigation">
-    <a href="/">Home</a>
-    <a href="/about">About</a>
-    <a href="/projects">Projects</a>
-    <a href="/blog">Blog</a>
-    <a href="/cp">CP</a>
-    <a href="/uses">Uses</a>
-    <a href="/now">Now</a>
-  </nav>
+<header class="site">
+  <div class="bar">
+    <a href="/" class="name">Shubham<span>.</span></a>
+    <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-label="Toggle navigation">menu</button>
+    <nav id="mainNav" aria-label="Main navigation">
+      <a href="/#work">work</a>
+      <a href="/about">about</a>
+      <a href="/blog">blog</a>
+      <a href="/reading">reading</a>
+      <a href="/cp">cp</a>
+      <a href="/uses">uses</a>
+      <a href="/now">now</a>
+    </nav>
+  </div>
 </header>
+
+<style>
+  header.site {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    width: 100%;
+    background: var(--header-bg);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .bar {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 14px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .bar .name {
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  .bar .name span { color: var(--accent); }
+
+  .bar nav {
+    display: flex;
+    gap: 4px;
+  }
+
+  .bar nav a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: .85rem;
+    padding: 5px 10px;
+    border-radius: 6px;
+    transition: color .15s, background .15s;
+  }
+
+  .bar nav a:hover {
+    color: var(--text);
+    background: var(--chip);
+  }
+
+  .bar nav a.active { color: var(--accent); }
+
+  .menu-btn {
+    display: none;
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: 6px;
+    padding: 5px 10px;
+    font-family: var(--font-mono);
+    font-size: .75rem;
+    cursor: pointer;
+  }
+
+  @media (max-width: 768px) {
+    .bar {
+      max-width: 100%;
+    }
+
+    .menu-btn {
+      display: block;
+    }
+
+    .bar nav {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      flex-direction: column;
+      padding: 10px 24px 16px;
+    }
+
+    .bar nav.open {
+      display: flex;
+    }
+  }
+</style>

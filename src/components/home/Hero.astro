@@ -1,0 +1,85 @@
+---
+// Hero — K2 v3 mockup port: headline, fact row, resume, photo, signals
+import Signals from './Signals.astro';
+---
+<div class="hero rv">
+  <p class="hi">shubham · iiitm gwalior · b.tech + m.tech it · 2027</p>
+  <div class="hero-row">
+    <div>
+      <h1>I build AI systems that actually ship.</h1>
+      <p class="sub">Third-year CS student. Three products built, 500+ DSA problems across platforms, and writing on everything I learn along the way. Currently: rebuilding Merix's matching pipeline, reading DDIA ch. 7, grinding Codeforces to 1900.</p>
+      <p class="hero-facts">B.Tech + M.Tech IT · IIITM Gwalior · Gwalior, India · graduating 2027 · <a href="mailto:shubham@example.com">shubham@example.com</a></p>
+      <a href="#" class="hero-resume" aria-label="Download resume (PDF placeholder)">download resume ↓</a>
+    </div>
+    <div class="photo" role="img" aria-label="Portrait of Shubham — placeholder, swap with a real photo at build time">S</div>
+  </div>
+  <Signals />
+</div>
+
+<style>
+  .hero { padding: 72px 0 8px; }
+  .hero .hi {
+    font-family: var(--font-mono);
+    font-size: .8rem;
+    color: var(--accent);
+    letter-spacing: .06em;
+    margin-bottom: 14px;
+  }
+  h1 {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 700;
+    letter-spacing: -.025em;
+    line-height: 1.15;
+  }
+  .hero .sub {
+    color: var(--muted);
+    max-width: 44em;
+    margin-top: 16px;
+  }
+  .hero-facts {
+    font-family: var(--font-mono);
+    font-size: .75rem;
+    color: var(--muted);
+    margin-top: 18px;
+  }
+  .hero-facts a { color: var(--accent2); text-decoration: none; }
+  .hero-facts a:hover { text-decoration: underline; }
+  .hero-resume {
+    display: inline-block;
+    margin-top: 14px;
+    padding: 8px 18px;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    border-radius: 6px;
+    font-family: var(--font-mono);
+    font-size: .78rem;
+    text-decoration: none;
+    transition: background .15s, color .15s;
+  }
+  .hero-resume:hover { background: var(--accent); color: var(--bg); }
+  .hero-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 40px;
+    align-items: center;
+    margin-top: 4px;
+  }
+  .hero-row .photo { width: 200px; }
+  .photo {
+    width: 220px;
+    aspect-ratio: 3/4;
+    border-radius: 12px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-size: 3rem;
+    color: var(--accent);
+  }
+  @media (max-width: 768px) {
+    .hero-row { grid-template-columns: 1fr; gap: 20px; }
+    .hero-row .photo { order: -1; width: 150px; }
+  }
+</style>

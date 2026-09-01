@@ -1,13 +1,89 @@
 ---
+import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
+import ProjectCard from '../../components/home/ProjectCard.astro';
+
+const allProjects = await getCollection('projects', ({ data }) => !data.draft);
+
+const projectMeta: Record<string, { stack: string[]; github?: string; live?: string }> = {
+  merix: { stack: ['FastAPI', 'Next.js', 'PostgreSQL', 'OpenAI'], github: '#' },
+  platewise: { stack: ['LangChain', 'Python', 'FastAPI', 'ChromaDB'], github: '#' },
+  yourtomo: { stack: ['TypeScript', 'Node.js', 'Git API', 'SVG'], github: '#' },
+};
 ---
 
-<BaseLayout title="Projects — Shubham" description="Projects by Shubham.">
+<BaseLayout title="Projects — Shubham" description="Projects built by Shubham. Case studies on building AI systems, RAG pipelines, and full-stack tools.">
   <Header />
   <main>
-    <h1>Projects</h1>
+    <div class="list-header">
+      <h1>Projects</h1>
+      <p class="list-sub">Things I've built — each with a case study on what went right, what broke, and what I'd do differently.</p>
+    </div>
+
+    {
+      allProjects.length === 0 ? (
+        <p class="empty">No projects yet. Check back soon.</p>
+      ) : (
+        <div class="proj-grid">
+          {allProjects.map((p) => {
+            const meta = projectMeta[p.id.replace(/\.mdx$/, '')] ?? { stack: [] };
+            return (
+              <ProjectCard
+                title={p.data.title}
+                description={p.data.excerpt}
+                stack={meta.stack}
+                github={meta.github}
+                caseStudy={`/projects/${p.id.replace(/\.mdx$/, '')}`}
+              />
+            );
+          })}
+        </div>
+      )
+    }
   </main>
   <Footer />
 </BaseLayout>
+
+<style>
+  main {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 48px 24px 0;
+  }
+
+  .list-header {
+    margin-bottom: 32px;
+  }
+
+  .list-header h1 {
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.01em;
+    margin-bottom: 8px;
+  }
+
+  .list-sub {
+    color: var(--muted);
+    font-size: .95rem;
+    line-height: 1.6;
+    max-width: 44em;
+  }
+
+  .empty {
+    color: var(--muted);
+    font-size: .9rem;
+  }
+
+  .proj-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+
+  @media (max-width: 768px) {
+    .proj-grid { grid-template-columns: 1fr; }
+  }
+</style>

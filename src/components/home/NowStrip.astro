@@ -1,0 +1,68 @@
+<div class="nowstrip rv">
+  <div class="now">
+    <span class="label"><span class="pulse" aria-hidden="true"></span> this week</span>
+    <p>Shipping Merix's matching-pipeline v2, grinding toward Codeforces 1900, and writing up what Platewise taught me about RAG failure modes.</p>
+  </div>
+  <div class="open">
+    <span class="label">open to</span>
+    <p><strong>Summer 2027 internships</strong> (backend / AI), open-source collaboration, and research-adjacent projects. If you're hiring a builder who writes and reads without being told to —</p>
+    <a class="mailto" href="mailto:shubham@example.com">get in touch →</a>
+  </div>
+</div>
+
+<style>
+  .nowstrip {
+    background: var(--chip);
+    border: none;
+    border-radius: 10px;
+    padding: 20px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+  }
+  .now, .open {
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    padding: 0;
+    flex: 1;
+  }
+  .now .label, .open .label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-mono);
+    font-size: .7rem;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+  .pulse {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.35} }
+  .now p, .open p { color: var(--muted); font-size: .9rem; }
+  .open strong { color: var(--text); }
+  .mailto {
+    display: inline-block;
+    margin-top: 12px;
+    font-family: var(--font-mono);
+    font-size: .8rem;
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .mailto:hover { text-decoration: underline; }
+  @media (max-width: 768px) {
+    .nowstrip {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 16px;
+    }
+  }
+</style>

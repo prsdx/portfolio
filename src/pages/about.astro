@@ -2,12 +2,202 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import Achievements from '../components/home/Achievements.astro';
 ---
 
-<BaseLayout title="About — Shubham" description="About Shubham.">
+<BaseLayout title="About — Shubham" description="About Shubham — third-year CS student at IIITM Gwalior, building AI systems and writing about it.">
   <Header />
+
   <main>
-    <h1>About</h1>
+    <div class="page-head">
+      <h1>About</h1>
+    </div>
+
+    <div class="about-grid rv">
+      <div class="photo" role="img" aria-label="Portrait of Shubham">S</div>
+      <div>
+        <p>I'm Shubham — a third-year <strong>B.Tech + M.Tech IT student at IIITM Gwalior</strong>. I got into programming through competitive programming (prsdx on Codeforces), stayed for the systems, and now spend most of my time building AI products and writing about what I learn.</p>
+        <p>Right now I'm deep in retrieval pipelines and embedding trade-offs, rebuilding Merix's matching engine, and working through <strong>Designing Data-Intensive Applications</strong> one chapter at a time — with notes, in public.</p>
+        <ul class="facts">
+          <li>Gwalior, India</li>
+          <li>graduating 2027</li>
+          <li>prsdx · cf 1847</li>
+          <li>github.com/prsdx</li>
+        </ul>
+      </div>
+    </div>
+
+    <section class="rv">
+      <h2>Timeline</h2>
+      <dl class="timeline">
+        <div>
+          <dt>2023</dt>
+          <dd>Started at IIITM Gwalior — B.Tech + M.Tech IT (5-year integrated). Discovered competitive programming.</dd>
+        </div>
+        <div>
+          <dt>2024</dt>
+          <dd>Built first full-stack project. Hit 500+ DSA problems across Codeforces, LeetCode, and CodeChef. Started writing about what I was learning.</dd>
+        </div>
+        <div>
+          <dt>2025</dt>
+          <dd>Built Merix, Platewise, and YourTomo. Started reading research papers seriously. Crossed 1800+ on Codeforces.</dd>
+        </div>
+        <div>
+          <dt>2026</dt>
+          <dd>Rebuilding Merix v2. Reading DDIA. Writing more. Looking for Summer 2027 internships in backend / AI.</dd>
+        </div>
+      </dl>
+    </section>
+
+    <section class="rv">
+      <h2>Achievements</h2>
+      <Achievements />
+    </section>
+
+    <section class="rv">
+      <h2>Links</h2>
+      <ul class="link-list">
+        <li><a href="https://github.com/prsdx">GitHub</a></li>
+        <li><a href="https://x.com/prsd_x">X / Twitter</a></li>
+        <li><a href="https://codeforces.com/profile/prsdx">Codeforces</a></li>
+      </ul>
+    </section>
   </main>
+
   <Footer />
 </BaseLayout>
+
+<style>
+  main {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 48px 24px 0;
+  }
+
+  .page-head h1 {
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.01em;
+    margin-bottom: 32px;
+  }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: 150px 1fr;
+    gap: 32px;
+    align-items: start;
+    margin-bottom: 40px;
+  }
+
+  .photo {
+    width: 150px;
+    aspect-ratio: 3/4;
+    border-radius: 12px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-size: 3rem;
+    color: var(--accent);
+  }
+
+  .about-grid p {
+    color: var(--muted);
+    margin-bottom: 12px;
+    max-width: 56em;
+    line-height: 1.7;
+  }
+
+  .about-grid p strong { color: var(--text); font-weight: 600; }
+
+  .facts {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 6px;
+  }
+
+  .facts li {
+    font-family: var(--font-mono);
+    font-size: .7rem;
+    background: var(--chip);
+    padding: 3px 8px;
+    border-radius: 4px;
+    color: var(--muted);
+  }
+
+  section {
+    margin-bottom: 40px;
+  }
+
+  section h2 {
+    font-size: .78rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+    margin-bottom: 18px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .timeline div {
+    display: grid;
+    grid-template-columns: 60px 1fr;
+    gap: 16px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .timeline dt {
+    font-family: var(--font-mono);
+    font-size: .8rem;
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .timeline dd {
+    color: var(--muted);
+    font-size: .9rem;
+    line-height: 1.6;
+  }
+
+  .link-list {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .link-list a {
+    font-family: var(--font-mono);
+    font-size: .82rem;
+    color: var(--accent2);
+    text-decoration: none;
+    padding: 6px 14px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    transition: border-color .15s, color .15s;
+  }
+
+  .link-list a:hover {
+    border-color: var(--accent2);
+    color: var(--accent);
+  }
+
+  @media (max-width: 768px) {
+    .about-grid { grid-template-columns: 1fr; justify-items: center; }
+    .about-grid .photo { width: 150px; }
+    .timeline div { grid-template-columns: 50px 1fr; }
+  }
+</style>

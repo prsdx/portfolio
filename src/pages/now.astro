@@ -4,10 +4,96 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 ---
 
-<BaseLayout title="Now — Shubham" description="What Shubham is up to now.">
+<BaseLayout title="Now — Shubham" description="What Shubham is focused on right now.">
   <Header />
+
   <main>
-    <h1>Now</h1>
+    <div class="page-head rv">
+      <p class="updated">Last updated: September 2026</p>
+      <h1>Now</h1>
+    </div>
+
+    <article class="now-text rv">
+      <p>
+        Finishing my 4th semester at <strong>IIITM Gwalior</strong>. The coursework load is manageable this term — mostly electives — which means I have real time to build things.
+      </p>
+
+      <p>
+        Working on <strong>Merix v2</strong> — currently fixing the matching pipeline. The scoring layer blends semantic similarity with structured signals, and getting the weights right on the structured side is taking more iteration than I expected. The explanation generation is working well though; the pipeline produces honest, readable reasons for every rank.
+      </p>
+
+      <p>
+        Reading <strong>Designing Data-Intensive Applications</strong> — chapter 7 right now, on transactions. The storage engine chapter (3) was the highlight so far. I'm taking notes in public, which means I actually have to understand things before writing them down.
+      </p>
+
+      <p>
+        Writing about <strong>RAG systems</strong> — specifically the failure modes nobody documents. Platewise taught me more about what breaks than what works, and I think that's the more useful thing to share. Drafting a post on why embedding similarity alone produces terrible ranking results.
+      </p>
+
+      <p>
+        Grinding <strong>Codeforces</strong> toward 1900. Stuck around 1847 for a few weeks — the jump from Expert to Candidate Master is real. Solving more 1800-2000 rated problems and reviewing editorial approaches I wouldn't have thought of.
+      </p>
+
+      <p class="closing">
+        Looking for <strong>Summer 2027 internships</strong> in backend engineering or AI. If you're hiring someone who ships, writes, and reads without being told to — <a href="mailto:shubham@example.com">get in touch</a>.
+      </p>
+    </article>
   </main>
+
   <Footer />
 </BaseLayout>
+
+<style>
+  main {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 48px 24px 0;
+  }
+
+  .page-head {
+    margin-bottom: 36px;
+  }
+
+  .updated {
+    font-family: var(--font-mono);
+    font-size: .72rem;
+    color: var(--muted);
+    letter-spacing: .05em;
+    margin-bottom: 12px;
+  }
+
+  .page-head h1 {
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.01em;
+  }
+
+  .now-text p {
+    color: var(--muted);
+    font-size: 1rem;
+    line-height: 1.85;
+    margin-bottom: 24px;
+    max-width: 60ch;
+  }
+
+  .now-text strong {
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  .now-text a {
+    color: var(--accent2);
+    text-decoration: none;
+    transition: color .15s;
+  }
+
+  .now-text a:hover { color: var(--accent); }
+
+  .closing {
+    margin-top: 40px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    font-style: italic;
+  }
+</style>

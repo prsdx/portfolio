@@ -1,0 +1,50 @@
+---
+title: "Merix — AI-Powered Placement Matching"
+date: 2026-09-01
+excerpt: "Building a pipeline that parses resumes, matches them to job descriptions, and explains why — because placement officers won't trust a black box."
+tags: ["AI/ML", "Systems", "FastAPI"]
+draft: false
+---
+
+## The problem
+
+Placement drives at my college are manual. Resumes pile up as PDFs, someone reads them against job descriptions, and shortlists take days. The process doesn't scale, and more importantly — good candidates get missed because their resumes don't match keyword searches. I wanted to fix that.
+
+The deeper problem was trust. Placement officers won't adopt a tool that gives them a ranked list with no explanation. Every score needs a reason attached to it.
+
+## What I built
+
+Merix is a matching pipeline with three stages:
+
+**Parse** — Resumes and JDs come in as PDF/plain text. A parser (built on PyMuPDF) extracts structured profiles: skills, projects, experience timeline, education.
+
+**Embed + Score** — The JD and each candidate profile are embedded separately. I cache profiles at ingest time so re-running a drive only embeds the new JD. The scoring layer blends semantic similarity (cosine) with structured signals: skill match count, recency weighting, and depth indicators.
+
+**Explain** — This is the part that makes it usable. Every match row in the dashboard includes a plain-language explanation generated from the matching evidence. "Ranked #2 because: strong Python match (4 projects), relevant ML coursework, but no cloud deployment experience mentioned."
+
+The dashboard is a Next.js app that placement officers actually use. Not a terminal script.
+
+## How it works
+
+```
+resume.pdf / jd.txt
+  → parser (PyMuPDF) → structured profile JSON
+  → embedding + scoring service (OpenAI + custom ranker)
+  → PostgreSQL (drives, candidates, explanations)
+  → FastAPI → Next.js dashboard for placement officers
+  → ranked list, each row with a written reason
+```
+
+The design constraint that shaped everything: **placement officers won't trust a black box**. Every score ships with a plain-language explanation generated from the matching evidence, so the tool assists a human decision instead of replacing it.
+
+## The hard parts
+
+**Resumes are chaos.** Two-column PDFs, scanned images, 12-page CVs. The parser handles the 90% case gracefully and flags the rest for manual review instead of silently dropping candidates.
+
+**Embeddings alone rank badly.** Pure similarity puts "Python" in the description above actual project evidence. The final score blends semantic match with structured signals — skills, recency, depth.
+
+**Cost per drive.** Early prototypes re-embedded every resume per job. Caching profiles at ingest and embedding only the JD per drive cut API spend by roughly an order of magnitude.
+
+## Where it stands
+
+Used in trial runs with sample drive data. v2 is a rebuild of the matching pipeline with better explanation quality and a cleaner officer workflow. The honest numbers go here once the next campus pilot finishes — this page gets updated with real results, not projections.
