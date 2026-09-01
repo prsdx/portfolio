@@ -175,6 +175,12 @@ dist/
 
 ## Notes for next task
 <!-- Fill in after completing this task -->
-- Node version used:
+- Node version used: v24.19.0 (npm 11.17.0), Python 3.12.11, Astro 5.18.2, Tailwind 4.3.3
 - Any install issues encountered:
-- Graphify graph size (approximate):
+  - `npm create astro@latest .` refuses non-empty dirs — scaffolded in a temp folder and copied in. Template overwrote CLAUDE.md/README.md; both restored manually.
+  - Latest create-astro ships Astro 7 — pinned `astro@^5` per ADR-003.
+  - `npx astro add tailwind` and long `npm install` calls hit the 30s command timeout on Windows; Tailwind v4 was wired manually via `@tailwindcss/vite` in `astro.config.mjs` instead. Same effect, no interactive prompts.
+  - `pip install graphifyy` is not the package name on this machine; `graphify` CLI (0.9.48) was already available. Build command is `graphify update .` (bare `graphify` just prints help). Its parser warns on `.astro` frontmatter — cosmetic only, expected.
+  - Geist variable woff2 files copied from `node_modules/geist/dist/fonts/` to `public/fonts/` (Geist-Variable.woff2 + GeistMono-Variable.woff2).
+- Graphify graph size (approximate): 223 nodes, 217 edges, 22 communities
+- Git: committed on `feat/scaffold` (root commit). **No git remote configured — `git push` skipped. Add remote and push when ready.**
