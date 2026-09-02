@@ -21,48 +21,93 @@ const { title, description, stack, github, live, caseStudy } = Astro.props;
   <div class="stack">
     {stack.map((t) => <code>{t}</code>)}
   </div>
-  <a class="case-btn" href={caseStudy ?? '#'}>read case study →</a>
+  <a class="case-btn magnetic" href={caseStudy ?? '#'}>
+    <span>read case study</span>
+    <span class="arr" aria-hidden="true">→</span>
+  </a>
 </article>
+
+<script>
+  // ProjectCard interactive mouse spotlight
+  const cards = document.querySelectorAll('.proj');
+  cards.forEach((c) => {
+    const card = c as HTMLElement;
+    card.addEventListener('pointermove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      card.style.setProperty('--card-x', `${x}px`);
+      card.style.setProperty('--card-y', `${y}px`);
+    });
+  });
+</script>
 
 <style>
   .proj {
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: var(--radius);
-    padding: 22px;
+    padding: 24px;
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    transition: border-color .18s, transform .18s, box-shadow .18s;
+    gap: 14px;
+    transition: border-color .25s ease, transform .25s ease, box-shadow .25s ease;
     position: relative;
     overflow: hidden;
+    box-shadow: var(--shadow-card);
   }
-  /* top amber rule — reveals on hover */
+
+  /* Interactive card inner spotlight */
+  .proj::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0;
+    background: radial-gradient(350px circle at var(--card-x, 50%) var(--card-y, 50%), var(--accent-dim), transparent 80%);
+    transition: opacity .35s ease;
+    z-index: 0;
+  }
+  .proj:hover::before { opacity: 1; }
+
+  /* Animated top gradient bar */
   .proj::after {
     content: '';
     position: absolute;
     top: 0; left: 0; right: 0;
     height: 2px;
-    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    background: linear-gradient(90deg, transparent, var(--accent), var(--accent2), transparent);
+    background-size: 200% 100%;
     opacity: 0;
-    transition: opacity .2s;
+    transition: opacity .25s ease;
+    z-index: 1;
   }
   .proj:hover {
     border-color: var(--border-hover);
-    transform: translateY(-3px);
+    transform: translateY(-4px);
     box-shadow: var(--shadow-hover);
   }
-  .proj:hover::after { opacity: 1; }
+  .proj:hover::after {
+    opacity: 1;
+    animation: shimmer-flow 2.5s infinite linear;
+  }
+
+  @keyframes shimmer-flow {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
 
   .proj-top {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
     gap: 8px;
+    position: relative;
+    z-index: 1;
   }
 
   .proj h3 {
-    font-size: 1.08rem;
+    font-size: 1.12rem;
     font-weight: 700;
     color: var(--text);
     letter-spacing: -.01em;
@@ -75,21 +120,30 @@ const { title, description, stack, github, live, caseStudy } = Astro.props;
   }
   .p-links a {
     font-family: var(--font-mono);
-    font-size: .7rem;
+    font-size: .72rem;
     color: var(--muted);
     text-decoration: none;
-    transition: color .15s;
+    transition: color .15s ease;
   }
-  .p-links a:hover { color: var(--accent2); }
+  .p-links a:hover { color: var(--accent); }
 
   .proj > p {
     color: var(--text-2);
-    font-size: .9rem;
-    line-height: 1.65;
+    font-size: .92rem;
+    line-height: 1.68;
     flex: 1;
+    position: relative;
+    z-index: 1;
   }
 
-  .stack { display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto; }
+  .stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: auto;
+    position: relative;
+    z-index: 1;
+  }
   .stack code {
     font-family: var(--font-mono);
     font-size: .67rem;
@@ -99,26 +153,43 @@ const { title, description, stack, github, live, caseStudy } = Astro.props;
     border-radius: 5px;
     color: var(--muted);
     letter-spacing: .02em;
+    transition: border-color .15s ease, color .15s ease;
+  }
+  .proj:hover .stack code {
+    border-color: var(--border-hover);
+    color: var(--text-2);
   }
 
   .case-btn {
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
     width: 100%;
     text-align: center;
-    padding: 10px;
+    padding: 10px 14px;
     margin-top: 4px;
     border: 1px solid var(--border);
-    border-radius: 7px;
+    border-radius: 8px;
     font-family: var(--font-mono);
-    font-size: .76rem;
+    font-size: .78rem;
     color: var(--text-2);
     text-decoration: none;
-    transition: border-color .15s, color .15s, background .15s;
+    transition: border-color .2s ease, color .2s ease, background .2s ease, box-shadow .2s ease;
     font-weight: 500;
+    position: relative;
+    z-index: 1;
+  }
+  .case-btn .arr {
+    transition: transform .2s ease;
   }
   .case-btn:hover {
     border-color: var(--accent);
     color: var(--accent);
     background: var(--accent-dim);
+    box-shadow: 0 0 16px var(--accent-dim);
+  }
+  .case-btn:hover .arr {
+    transform: translateX(3px);
   }
 </style>

@@ -1,28 +1,96 @@
 ---
 const signals = [
-  { value: "1847", label: "Codeforces", sub: "Expert rating", href: "https://codeforces.com/profile/prsdx" },
-  { value: "500+", label: "DSA problems", sub: "CF + LC + CC", href: null },
-  { value: "300+", label: "Contributions", sub: "GitHub", href: "https://github.com/prsdx" },
-  { value: "3",    label: "Products", sub: "shipped", href: null },
+  { value: "1847", num: 1847, suffix: "", label: "Codeforces", sub: "Expert rating", href: "https://codeforces.com/profile/prsdx" },
+  { value: "500+", num: 500,  suffix: "+", label: "DSA problems", sub: "CF + LC + CC", href: null },
+  { value: "300+", num: 300,  suffix: "+", label: "Contributions", sub: "GitHub", href: "https://github.com/prsdx" },
+  { value: "3",    num: 3,    suffix: "", label: "Products", sub: "shipped", href: null },
 ];
 ---
 <div class="signals rv" role="list" aria-label="Key stats">
   {signals.map((s) =>
     s.href ? (
       <a class="sig" role="listitem" href={s.href}>
-        <b>{s.value}</b>
+        <b class="sig-val" data-target={s.num} data-suffix={s.suffix}>{s.value}</b>
         <span class="sig-label">{s.label}</span>
         <span class="sig-sub">{s.sub}</span>
       </a>
     ) : (
       <div class="sig" role="listitem">
-        <b>{s.value}</b>
+        <b class="sig-val" data-target={s.num} data-suffix={s.suffix}>{s.value}</b>
         <span class="sig-label">{s.label}</span>
         <span class="sig-sub">{s.sub}</span>
       </div>
     )
   )}
 </div>
+
+<script>
+  // Count-up animation for signals numbers
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!prefersReduced) {
+    const counters = document.querySelectorAll('.sig-val[data-target]');
+    let animated = false;
+
+    const easeOutQuad = (t: number) => t * (2 - t);
+
+    function animateCounters() {
+      if (animated) return;
+      animated = true;
+      const duration = 1200; // ms
+      const startTime = performance.now();
+
+      function update(currentTime: number) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const eased = easeOutQuad(progress);
+
+        counters.forEach((el) => {
+          const target = Number(el.getAttribute('data-target') || 0);
+          const suffix = el.getAttribute('data-suffix') || '';
+          const current = Math.floor(eased * target);
+          el.textContent = `${current.toLocaleString()}${suffix}`;
+        });
+
+        if (progress < 1) {
+          requestAnimationFrame(update);
+        } else {
+          counters.forEach((el) => {
+            const target = Number(el.getAttribute('data-target') || 0);
+            const suffix = el.getAttribute('data-suffix') || '';
+            el.textContent = `${target.toLocaleString()}${suffix}`;
+          });
+        }
+      }
+
+      requestAnimationFrame(update);
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) {
+          animateCounters();
+          observer.disconnect();
+        }
+      });
+    }, { threshold: 0.2 });
+
+    const container = document.querySelector('.signals');
+    if (container) observer.observe(container);
+
+    // Interactive card tilt / spotlight
+    const cards = document.querySelectorAll('.sig');
+    cards.forEach((c) => {
+      const card = c as HTMLElement;
+      card.addEventListener('pointermove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        card.style.setProperty('--card-x', `${x}px`);
+        card.style.setProperty('--card-y', `${y}px`);
+      });
+    });
+  }
+</script>
 
 <style>
   .signals {
@@ -36,53 +104,76 @@ const signals = [
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: var(--radius);
-    padding: 18px 20px;
+    padding: 20px 22px;
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: 3px;
     text-decoration: none;
     color: var(--text);
-    transition: border-color .18s, transform .18s, box-shadow .18s;
+    transition: border-color .25s ease, transform .25s ease, box-shadow .25s ease;
     position: relative;
     overflow: hidden;
   }
+  /* Card interactive spotlight glow */
+  .sig::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0;
+    background: radial-gradient(220px circle at var(--card-x, 50%) var(--card-y, 50%), var(--accent-dim), transparent 80%);
+    transition: opacity .3s ease;
+  }
+  .sig:hover::after { opacity: 1; }
+
   /* left accent bar */
   .sig::before {
     content: '';
     position: absolute;
     left: 0; top: 0; bottom: 0;
-    width: 2px;
-    background: var(--accent);
+    width: 3px;
+    background: linear-gradient(180deg, var(--accent), var(--accent2));
     opacity: 0;
-    transition: opacity .18s;
+    transition: opacity .22s ease, transform .22s ease;
+    transform: scaleY(0.5);
+    transform-origin: center;
   }
-  a.sig:hover {
+  .sig:hover {
     border-color: var(--border-hover);
     transform: translateY(-3px);
     box-shadow: var(--shadow-hover);
   }
-  a.sig:hover::before { opacity: 1; }
+  .sig:hover::before {
+    opacity: 1;
+    transform: scaleY(1);
+  }
 
   .sig b {
     display: block;
-    font-size: 1.7rem;
+    font-size: 1.85rem;
     font-weight: 800;
     font-family: var(--font-mono);
     color: var(--accent);
     letter-spacing: -.02em;
     line-height: 1;
+    position: relative;
+    z-index: 1;
   }
   .sig-label {
-    font-size: .82rem;
+    font-size: .84rem;
     font-weight: 600;
     color: var(--text-2);
     margin-top: 4px;
+    position: relative;
+    z-index: 1;
   }
   .sig-sub {
-    font-size: .7rem;
+    font-size: .72rem;
     color: var(--muted);
     font-family: var(--font-mono);
-    letter-spacing: .03em;
+    letter-spacing: .02em;
+    position: relative;
+    z-index: 1;
   }
 
   @media (max-width: 768px) {

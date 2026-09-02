@@ -166,36 +166,20 @@ const projects = [
 </style>
 
 <script>
-  // Staggered reveal animation
-  const items = document.querySelectorAll('.rv');
-  items.forEach((el, i) => el.style.transitionDelay = (i % 6) * 70 + 'ms');
+  // Staggered reveal animation with subtle sequential timing
+  const items = document.querySelectorAll('.rv:not(.in)');
+  items.forEach((el, i) => {
+    (el as HTMLElement).style.transitionDelay = ((i % 5) * 65) + 'ms';
+  });
   const io = new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
-  }, { threshold: 0.1 });
-  items.forEach(el => io.observe(el));
-
-  // Mobile nav toggle
-  const btn = document.getElementById('menuBtn');
-  const navEl = document.getElementById('mainNav');
-  if (btn && navEl) {
-    btn.addEventListener('click', () => {
-      const open = navEl.classList.toggle('open');
-      btn.setAttribute('aria-expanded', String(open));
-    });
-    navEl.addEventListener('click', e => {
-      if (e.target.tagName === 'A') navEl.classList.remove('open');
-    });
-  }
-
-  // Scrollspy for nav links
-  const links = [...navEl.querySelectorAll('a[href^="#"]')];
-  const secs = links.map(a => document.querySelector(a.hash)).filter(Boolean);
-  const spy = new IntersectionObserver(entries => {
     entries.forEach(e => {
-      if (e.isIntersecting) links.forEach(a => a.classList.toggle('active', a.hash === '#' + e.target.id));
+      if (e.isIntersecting) {
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
     });
-  }, { rootMargin: '-30% 0px -55% 0px' });
-  secs.forEach(s => spy.observe(s));
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  items.forEach(el => io.observe(el));
 </script>
 
 <!--

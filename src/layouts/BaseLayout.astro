@@ -67,6 +67,84 @@ const imageUrl = image.startsWith('http') ? image : new URL(image, siteUrl).href
     </script>
   </head>
   <body>
+    <div id="scroll-progress" aria-hidden="true"></div>
+    <div id="cursor-spotlight" aria-hidden="true"></div>
     <slot />
+
+    <script>
+      // Global interactive polish: cursor spotlight, scroll progress & magnetic elements
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      // 1. Scroll progress
+      const progressBar = document.getElementById('scroll-progress');
+      if (progressBar) {
+        let ticking = false;
+        window.addEventListener('scroll', () => {
+          if (!ticking) {
+            window.requestAnimationFrame(() => {
+              const h = document.documentElement.scrollHeight - window.innerHeight;
+              const scrolled = h > 0 ? (window.scrollY / h) * 100 : 0;
+              progressBar.style.width = scrolled + '%';
+              ticking = false;
+            });
+            ticking = true;
+          }
+        }, { passive: true });
+      }
+
+      if (!prefersReducedMotion) {
+        // 2. Cursor spotlight tracking
+        const spotlight = document.getElementById('cursor-spotlight');
+        if (spotlight) {
+          let mouseX = -9999;
+          let mouseY = -9999;
+          let spotTicking = false;
+          window.addEventListener('pointermove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            if (!spotTicking) {
+              window.requestAnimationFrame(() => {
+                spotlight.style.setProperty('--mouse-x', `${mouseX}px`);
+                spotlight.style.setProperty('--mouse-y', `${mouseY}px`);
+                spotTicking = false;
+              });
+              spotTicking = true;
+            }
+          }, { passive: true });
+        }
+
+        // 3. Magnetic button micro-interactions
+        const magnetics = document.querySelectorAll('.magnetic');
+        magnetics.forEach(el => {
+          const btn = el as HTMLElement;
+          btn.addEventListener('pointermove', (e) => {
+            const rect = btn.getBoundingClientRect();
+            const x = e.clientX - rect.left - rect.width / 2;
+            const y = e.clientY - rect.top - rect.height / 2;
+            btn.style.transform = `translate(${x * 0.22}px, ${y * 0.22}px)`;
+          });
+          btn.addEventListener('pointerleave', () => {
+            btn.style.transform = 'translate(0px, 0px)';
+          });
+        });
+      }
+
+      // 4. Staggered reveal observer (fallback / universal for any page using .rv)
+      const revealItems = document.querySelectorAll('.rv:not(.in)');
+      if (revealItems.length > 0) {
+        revealItems.forEach((el, i) => {
+          (el as HTMLElement).style.transitionDelay = ((i % 5) * 60) + 'ms';
+        });
+        const io = new IntersectionObserver((entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) {
+              e.target.classList.add('in');
+              io.unobserve(e.target);
+            }
+          });
+        }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+        revealItems.forEach((el) => io.observe(el));
+      }
+    </script>
   </body>
 </html>
