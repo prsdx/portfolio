@@ -1,0 +1,35 @@
+name: Fetch Notion Content
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "0 */6 * * *" # every 6 hours
+  workflow_dispatch: # manual trigger
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+
+      - run: npm ci
+
+      - name: Fetch Notion content
+        run: npx tsx scripts/fetch-notion.ts
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
+
+      - name: Commit synced content
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "content: sync from Notion"
+          file_pattern: "src/content/blog/*.mdx"
