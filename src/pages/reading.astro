@@ -104,8 +104,8 @@ const articles: ReadEntry[] = [
   .entry { padding: 16px 0; border-bottom: 1px solid var(--border); }
   .meta { display: flex; align-items: center; gap: 14px; margin-bottom: 6px; }
   .status { font-family: var(--font-mono); font-size: .65rem; padding: 2px 8px; border-radius: 3px; text-transform: uppercase; letter-spacing: .05em; }
-  .status.reading { background: rgba(224,170,62,.12); color: var(--accent); }
-  .status.finished { background: rgba(90,122,154,.15); color: var(--accent2); }
+  .status.reading { background: color-mix(in srgb, var(--accent) 12%, transparent); color: var(--accent); }
+  .status.finished { background: color-mix(in srgb, var(--accent2) 15%, transparent); color: var(--accent2); }
   .status.queued { background: var(--chip); color: var(--muted); }
   .status.read { background: var(--chip); color: var(--muted); }
   .date { font-family: var(--font-mono); font-size: .7rem; color: var(--muted); }
