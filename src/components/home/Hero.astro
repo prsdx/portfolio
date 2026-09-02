@@ -1,85 +1,132 @@
 ---
-// Hero — K2 v3 mockup port: headline, fact row, resume, photo, signals
 import Signals from './Signals.astro';
 ---
 <div class="hero rv">
-  <p class="hi">shubham · iiitm gwalior · b.tech + m.tech it · 2027</p>
+  <p class="eyebrow">shubham · iiitm gwalior · b.tech + m.tech it · 2027</p>
   <div class="hero-row">
-    <div>
-      <h1>I build AI systems that actually ship.</h1>
-      <p class="sub">Third-year CS student. Three products built, 500+ DSA problems across platforms, and writing on everything I learn along the way. Currently: rebuilding Merix's matching pipeline, reading DDIA ch. 7, grinding Codeforces to 1900.</p>
-      <p class="hero-facts">B.Tech + M.Tech IT · IIITM Gwalior · Gwalior, India · graduating 2027 · <a href="mailto:shubham@example.com">shubham@example.com</a></p>
+    <div class="hero-text">
+      <h1>
+        I build AI systems<br>
+        <span class="h1-accent">that actually ship.</span>
+      </h1>
+      <p class="sub">
+        Third-year CS student. Three products built, 500+ DSA problems across platforms,
+        and writing on everything I learn along the way.
+        Currently: rebuilding Merix's matching pipeline, reading DDIA ch. 7,
+        grinding Codeforces to 1900.
+      </p>
+      <p class="hero-facts">
+        B.Tech + M.Tech IT · IIITM Gwalior · Gwalior, India · graduating 2027 · <a href="mailto:shubham@example.com">shubham@example.com</a>
+      </p>
       <a href="#" class="hero-resume" aria-label="Download resume (PDF placeholder)">download resume ↓</a>
     </div>
-    <div class="photo" role="img" aria-label="Portrait of Shubham — placeholder, swap with a real photo at build time">S</div>
+    <div class="photo" role="img" aria-label="Portrait of Shubham — placeholder">S</div>
   </div>
   <Signals />
 </div>
 
 <style>
-  .hero { padding: 72px 0 8px; }
-  .hero .hi {
+  .hero { padding: 80px 0 12px; }
+
+  .eyebrow {
     font-family: var(--font-mono);
-    font-size: .8rem;
+    font-size: .78rem;
     color: var(--accent);
-    letter-spacing: .06em;
-    margin-bottom: 14px;
+    letter-spacing: .08em;
+    margin-bottom: 20px;
+    opacity: .9;
   }
+
   h1 {
-    font-size: clamp(2rem, 5vw, 3rem);
-    font-weight: 700;
-    letter-spacing: -.025em;
-    line-height: 1.15;
+    font-size: clamp(2.4rem, 6vw, 3.6rem);
+    font-weight: 800;
+    letter-spacing: -.03em;
+    line-height: 1.08;
+    color: var(--text);
+    margin-bottom: 20px;
   }
-  .hero .sub {
-    color: var(--muted);
-    max-width: 44em;
-    margin-top: 16px;
+
+  .h1-accent {
+    background: linear-gradient(135deg, var(--accent) 0%, #f4c96e 60%, var(--accent2) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
+
+  .sub {
+    color: var(--text-2);
+    font-size: 1.02rem;
+    line-height: 1.7;
+    max-width: 46em;
+    margin-bottom: 18px;
+  }
+
   .hero-facts {
     font-family: var(--font-mono);
     font-size: .75rem;
     color: var(--muted);
-    margin-top: 18px;
+    margin-bottom: 20px;
+    line-height: 1.8;
   }
-  .hero-facts a { color: var(--accent2); text-decoration: underline; text-underline-offset: 2px; }
+  .hero-facts a {
+    color: var(--accent2);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
   .hero-facts a:hover { color: var(--accent); }
+
   .hero-resume {
-    display: inline-block;
-    margin-top: 14px;
-    padding: 8px 18px;
-    border: 1px solid var(--accent);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 20px;
+    border: 1.5px solid var(--accent);
     color: var(--accent);
-    border-radius: 6px;
+    border-radius: 8px;
     font-family: var(--font-mono);
-    font-size: .78rem;
+    font-size: .8rem;
     text-decoration: none;
-    transition: background .15s, color .15s;
+    font-weight: 600;
+    transition: background .18s, color .18s, box-shadow .18s;
   }
-  .hero-resume:hover { background: var(--accent); color: var(--bg); }
+  .hero-resume:hover {
+    background: var(--accent);
+    color: var(--bg);
+    box-shadow: 0 0 20px var(--accent-dim);
+  }
+
   .hero-row {
     display: grid;
     grid-template-columns: 1fr auto;
-    gap: 40px;
+    gap: 48px;
     align-items: center;
-    margin-top: 4px;
   }
-  .hero-row .photo { width: 200px; }
+
   .photo {
-    width: 220px;
+    width: 200px;
     aspect-ratio: 3/4;
-    border-radius: 12px;
+    border-radius: 14px;
     background: var(--surface);
     border: 1px solid var(--border);
     display: flex;
     align-items: center;
     justify-content: center;
     font-family: var(--font-mono);
-    font-size: 3rem;
+    font-size: 3.5rem;
     color: var(--accent);
+    position: relative;
+    overflow: hidden;
   }
+  /* Subtle inner glow on photo placeholder */
+  .photo::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 40%, var(--accent-dim), transparent 70%);
+  }
+
   @media (max-width: 768px) {
-    .hero-row { grid-template-columns: 1fr; gap: 20px; }
-    .hero-row .photo { order: -1; width: 150px; }
+    .hero-row { grid-template-columns: 1fr; gap: 24px; }
+    .photo { order: -1; width: 130px; aspect-ratio: 1/1; border-radius: 50%; font-size: 2.5rem; }
   }
 </style>

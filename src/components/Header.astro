@@ -4,105 +4,193 @@
 <header class="site">
   <div class="bar">
     <a href="/" class="name">Shubham<span>.</span></a>
-    <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-label="Menu">menu</button>
     <nav id="mainNav" aria-label="Main navigation">
       <a href="/#work">work</a>
       <a href="/about">about</a>
       <a href="/blog">blog</a>
       <a href="/reading">reading</a>
       <a href="/cp">cp</a>
-      <a href="/uses">uses</a>
       <a href="/now">now</a>
     </nav>
+    <div class="header-actions">
+      <button
+        id="themeToggle"
+        class="theme-btn"
+        aria-label="Toggle theme"
+        title="Toggle light/dark"
+      >
+        <svg id="icon-sun" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="5"/>
+          <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+          <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+        </svg>
+        <svg id="icon-moon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+      </button>
+      <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-label="Menu">menu</button>
+    </div>
   </div>
 </header>
+
+<script>
+  // ── Theme toggle ──────────────────────────────────────────
+  function initTheme() {
+    const btn = document.getElementById('themeToggle');
+    const sun = document.getElementById('icon-sun');
+    const moon = document.getElementById('icon-moon');
+    if (!btn || !sun || !moon) return;
+
+    function applyTheme(t: string) {
+      document.documentElement.setAttribute('data-theme', t);
+      localStorage.setItem('theme', t);
+      sun.style.display  = t === 'dark'  ? 'block' : 'none';
+      moon.style.display = t === 'light' ? 'block' : 'none';
+    }
+
+    const current = document.documentElement.getAttribute('data-theme') || 'dark';
+    applyTheme(current);
+
+    btn.addEventListener('click', () => {
+      const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      applyTheme(next);
+    });
+  }
+
+  // ── Mobile nav ────────────────────────────────────────────
+  function initNav() {
+    const btn   = document.getElementById('menuBtn');
+    const navEl = document.getElementById('mainNav');
+    if (!btn || !navEl) return;
+    btn.addEventListener('click', () => {
+      const open = navEl.classList.toggle('open');
+      btn.setAttribute('aria-expanded', String(open));
+    });
+    navEl.addEventListener('click', e => {
+      if ((e.target as HTMLElement).tagName === 'A') navEl.classList.remove('open');
+    });
+  }
+
+  // ── Scrollspy ─────────────────────────────────────────────
+  function initScrollspy() {
+    const navEl = document.getElementById('mainNav');
+    if (!navEl) return;
+    const links = [...navEl.querySelectorAll('a[href^="#"]')] as HTMLAnchorElement[];
+    const secs  = links.map(a => document.querySelector(a.hash)).filter(Boolean) as Element[];
+    if (!secs.length) return;
+    const spy = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting)
+          links.forEach(a => a.classList.toggle('active', a.hash === '#' + e.target.id));
+      });
+    }, { rootMargin: '-30% 0px -55% 0px' });
+    secs.forEach(s => spy.observe(s));
+  }
+
+  initTheme();
+  initNav();
+  initScrollspy();
+</script>
 
 <style>
   header.site {
     position: sticky;
     top: 0;
-    z-index: 10;
+    z-index: 50;
     width: 100%;
     background: var(--header-bg);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
     border-bottom: 1px solid var(--border);
   }
 
   .bar {
     max-width: 1080px;
     margin: 0 auto;
-    padding: 14px 24px;
+    padding: 13px 24px;
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    gap: 8px;
   }
 
   .bar .name {
-    font-weight: 700;
-    font-size: 1rem;
+    font-weight: 800;
+    font-size: 1.05rem;
     color: var(--text);
     text-decoration: none;
+    letter-spacing: -.01em;
+    margin-right: auto;
   }
-
   .bar .name span { color: var(--accent); }
 
-  .bar nav {
+  nav {
     display: flex;
-    gap: 4px;
+    gap: 2px;
   }
-
-  .bar nav a {
+  nav a {
     color: var(--muted);
     text-decoration: none;
     font-size: .85rem;
-    padding: 5px 10px;
-    border-radius: 6px;
+    padding: 6px 10px;
+    border-radius: 7px;
     transition: color .15s, background .15s;
   }
+  nav a:hover  { color: var(--text); background: var(--chip); }
+  nav a.active { color: var(--accent); }
 
-  .bar nav a:hover {
-    color: var(--text);
-    background: var(--chip);
+  /* ── Actions (theme btn + menu btn) ── */
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-left: 8px;
   }
 
-  .bar nav a.active { color: var(--accent); }
+  .theme-btn {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    border-radius: 7px;
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: color .15s, border-color .15s, background .15s;
+  }
+  .theme-btn:hover { color: var(--accent); border-color: var(--accent); background: var(--accent-dim); }
+  .theme-btn svg { pointer-events: none; }
 
   .menu-btn {
     display: none;
     background: none;
     border: 1px solid var(--border);
     color: var(--text);
-    border-radius: 6px;
+    border-radius: 7px;
     padding: 5px 10px;
     font-family: var(--font-mono);
     font-size: .75rem;
     cursor: pointer;
+    transition: border-color .15s;
   }
+  .menu-btn:hover { border-color: var(--border-hover); }
 
   @media (max-width: 768px) {
-    .bar {
-      max-width: 100%;
-    }
-
-    .menu-btn {
-      display: block;
-    }
-
-    .bar nav {
+    .bar { max-width: 100%; }
+    .menu-btn { display: block; }
+    nav {
       display: none;
       position: absolute;
       top: 100%;
-      left: 0;
-      right: 0;
+      left: 0; right: 0;
       background: var(--bg);
       border-bottom: 1px solid var(--border);
       flex-direction: column;
       padding: 10px 24px 16px;
     }
-
-    .bar nav.open {
-      display: flex;
-    }
+    nav.open { display: flex; }
   }
 </style>

@@ -120,26 +120,26 @@ const projects = [
   .home {
     max-width: 1080px;
     margin: 0 auto;
-    padding: 0 24px 16px;
+    padding: 0 24px 24px;
   }
 
   section {
-    margin-bottom: 48px;
+    margin-bottom: 56px;
   }
 
   .sec-head {
     display: flex;
     justify-content: space-between;
     align-items: baseline;
-    margin-bottom: 18px;
+    margin-bottom: 20px;
   }
 
   .sec-head h2 {
-    font-size: .78rem;
-    letter-spacing: .1em;
+    font-size: .72rem;
+    letter-spacing: .12em;
     text-transform: uppercase;
     color: var(--muted);
-    font-weight: 600;
+    font-weight: 700;
   }
 
   .sec-head a {
@@ -147,8 +147,8 @@ const projects = [
     font-size: .78rem;
     color: var(--muted);
     text-decoration: none;
+    transition: color .15s;
   }
-
   .sec-head a:hover { color: var(--accent); }
 
   .proj-grid {
@@ -157,7 +157,10 @@ const projects = [
     gap: 16px;
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 900px) {
+    .proj-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 600px) {
     .proj-grid { grid-template-columns: 1fr; }
   }
 </style>

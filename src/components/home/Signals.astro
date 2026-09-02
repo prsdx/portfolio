@@ -1,18 +1,25 @@
 ---
-// Signals strip — 4 stat cards
 const signals = [
-  { value: "1847", label: "codeforces · expert", href: "https://codeforces.com/profile/prsdx" },
-  { value: "500+", label: "dsa problems · cf + lc + cc", href: null },
-  { value: "300+", label: "github · contributions", href: "https://github.com/prsdx" },
-  { value: "3", label: "products shipped", href: null },
+  { value: "1847", label: "Codeforces", sub: "Expert rating", href: "https://codeforces.com/profile/prsdx" },
+  { value: "500+", label: "DSA problems", sub: "CF + LC + CC", href: null },
+  { value: "300+", label: "Contributions", sub: "GitHub", href: "https://github.com/prsdx" },
+  { value: "3",    label: "Products", sub: "shipped", href: null },
 ];
 ---
-<div class="signals rv" role="list" aria-label="Key numbers">
+<div class="signals rv" role="list" aria-label="Key stats">
   {signals.map((s) =>
     s.href ? (
-      <a class="sig" role="listitem" href={s.href}><b>{s.value}</b><span>{s.label}</span></a>
+      <a class="sig" role="listitem" href={s.href}>
+        <b>{s.value}</b>
+        <span class="sig-label">{s.label}</span>
+        <span class="sig-sub">{s.sub}</span>
+      </a>
     ) : (
-      <div class="sig" role="listitem"><b>{s.value}</b><span>{s.label}</span></div>
+      <div class="sig" role="listitem">
+        <b>{s.value}</b>
+        <span class="sig-label">{s.label}</span>
+        <span class="sig-sub">{s.sub}</span>
+      </div>
     )
   )}
 </div>
@@ -21,32 +28,63 @@ const signals = [
   .signals {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
-    margin: 36px 0 8px;
+    gap: 12px;
+    margin: 40px 0 10px;
   }
+
   .sig {
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 16px 20px;
-    transition: border-color .15s;
-    color: var(--text);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
     text-decoration: none;
-    display: block;
+    color: var(--text);
+    transition: border-color .18s, transform .18s, box-shadow .18s;
+    position: relative;
+    overflow: hidden;
   }
-  .sig:hover { border-color: var(--border-hover); box-shadow: var(--shadow); }
+  /* left accent bar */
+  .sig::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 2px;
+    background: var(--accent);
+    opacity: 0;
+    transition: opacity .18s;
+  }
+  a.sig:hover {
+    border-color: var(--border-hover);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-hover);
+  }
+  a.sig:hover::before { opacity: 1; }
+
   .sig b {
     display: block;
-    font-size: 1.4rem;
-    font-weight: 700;
+    font-size: 1.7rem;
+    font-weight: 800;
     font-family: var(--font-mono);
+    color: var(--accent);
+    letter-spacing: -.02em;
+    line-height: 1;
   }
-  .sig span {
-    font-size: .72rem;
+  .sig-label {
+    font-size: .82rem;
+    font-weight: 600;
+    color: var(--text-2);
+    margin-top: 4px;
+  }
+  .sig-sub {
+    font-size: .7rem;
     color: var(--muted);
-    letter-spacing: .05em;
-    text-transform: uppercase;
+    font-family: var(--font-mono);
+    letter-spacing: .03em;
   }
+
   @media (max-width: 768px) {
     .signals { grid-template-columns: repeat(2, 1fr); }
   }

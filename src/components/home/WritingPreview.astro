@@ -6,16 +6,15 @@ interface Post {
   title: string;
   href: string;
 }
-
 const posts: Post[] = [
-  { date: "Jul 15, 2026", iso: "2026-07-15", tag: "AI/ML", title: "How I Built a RAG System That Actually Works", href: "#" },
-  { date: "Jun 30, 2026", iso: "2026-06-30", tag: "Codeforces", title: "What 200 Codeforces Problems Taught Me About Engineering", href: "#" },
-  { date: "May 20, 2026", iso: "2026-05-20", tag: "Systems", title: "Designing an AI Matching Pipeline from Scratch", href: "#" },
+  { date: "Jul 15, 2026", iso: "2026-07-15", tag: "AI/ML",       title: "How I Built a RAG System That Actually Works",          href: "#" },
+  { date: "Jun 30, 2026", iso: "2026-06-30", tag: "Codeforces",  title: "What 200 Codeforces Problems Taught Me About Engineering", href: "#" },
+  { date: "May 20, 2026", iso: "2026-05-20", tag: "Systems",     title: "Designing an AI Matching Pipeline from Scratch",         href: "#" },
 ];
 ---
 <div class="sec-head rv">
   <h2 id="writing-h">Latest writing</h2>
-  <a href="/blog">all writing →</a>
+  <a href="/blog">all posts →</a>
 </div>
 <ul class="posts rv">
   {posts.map((p) => (
@@ -32,53 +31,66 @@ const posts: Post[] = [
     display: flex;
     justify-content: space-between;
     align-items: baseline;
-    margin-bottom: 18px;
+    margin-bottom: 16px;
   }
   h2 {
-    font-size: .78rem;
-    letter-spacing: .1em;
+    font-size: .72rem;
+    letter-spacing: .12em;
     text-transform: uppercase;
     color: var(--muted);
-    font-weight: 600;
+    font-weight: 700;
   }
   .sec-head a {
     font-family: var(--font-mono);
     font-size: .78rem;
     color: var(--muted);
     text-decoration: none;
+    transition: color .15s;
   }
   .sec-head a:hover { color: var(--accent); }
+
   .posts { list-style: none; border-top: 1px solid var(--border); }
   .posts li {
-    display: flex;
-    gap: 20px;
-    padding: 13px 2px;
+    display: grid;
+    grid-template-columns: 96px auto 1fr;
+    gap: 16px;
+    padding: 14px 4px;
     border-bottom: 1px solid var(--border);
     align-items: baseline;
+    transition: background .15s;
   }
-  .posts time {
+  .posts li:hover {
+    background: var(--surface-2);
+    border-radius: 6px;
+  }
+  time {
     font-family: var(--font-mono);
-    font-size: .75rem;
+    font-size: .72rem;
     color: var(--muted);
     font-variant-numeric: tabular-nums;
-    min-width: 88px;
+    white-space: nowrap;
   }
   .posts a {
     color: var(--text);
     text-decoration: none;
     font-size: .95rem;
+    font-weight: 500;
+    transition: color .15s;
   }
   .posts a:hover { color: var(--accent); }
-  .posts .tag {
+  .tag {
     font-family: var(--font-mono);
-    font-size: .65rem;
-    padding: 2px 6px;
+    font-size: .62rem;
+    padding: 2px 7px;
     background: var(--chip);
-    color: var(--muted);
-    border-radius: 3px;
+    border: 1px solid var(--chip-border);
+    color: var(--accent2);
+    border-radius: 4px;
+    white-space: nowrap;
+    font-weight: 600;
+    letter-spacing: .03em;
   }
-  .posts .tag:hover { color: var(--accent2); }
   @media (max-width: 768px) {
-    .posts li { flex-direction: column; gap: 2px; }
+    .posts li { grid-template-columns: 1fr; gap: 4px; }
   }
 </style>

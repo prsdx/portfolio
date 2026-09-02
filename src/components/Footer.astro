@@ -1,56 +1,64 @@
 ---
-// Footer — K2 v3 mockup port
 ---
 <footer id="contact">
-  <div class="footer-top">
-    <span class="footer-name">Shubham.</span>
-    <span class="footer-loc">Built at IIITM Gwalior, India. Last updated Sep 2026.</span>
-  </div>
-  <div class="footer-links">
-    <a href="https://github.com/prsdx">github</a> · <a href="https://x.com/prsd_x">x</a> · <a href="https://codeforces.com/profile/prsdx">codeforces</a> · <a href="/rss.xml">rss</a> · <a href="mailto:shubham@example.com">email</a>
+  <div class="foot-inner">
+    <div class="foot-left">
+      <span class="foot-name">Shubham<span class="dot">.</span></span>
+      <span class="foot-loc">Built at IIITM Gwalior, India · Sep 2026</span>
+    </div>
+    <nav class="foot-links" aria-label="Social links">
+      <a href="https://github.com/prsdx">GitHub</a>
+      <a href="https://x.com/prsd_x">X</a>
+      <a href="https://codeforces.com/profile/prsdx">Codeforces</a>
+      <a href="/rss.xml">RSS</a>
+      <a href="mailto:shubham@example.com">Email</a>
+    </nav>
   </div>
 </footer>
 
 <style>
   footer {
     max-width: 1080px;
-    margin: 56px auto 0;
+    margin: 64px auto 0;
     padding: 24px;
     border-top: 1px solid var(--border);
-    font-size: .8rem;
-    color: var(--muted);
   }
-  .footer-top {
+  .foot-inner {
     display: flex;
     align-items: baseline;
-    margin-bottom: 8px;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
   }
-  .footer-name {
-    font-weight: 700;
-    font-size: 1rem;
-    color: var(--text);
-  }
-  .footer-loc {
-    font-size: .8rem;
-    color: var(--muted);
-    margin-left: 12px;
-  }
-  .footer-links {
+  .foot-left {
     display: flex;
-    gap: 16px;
+    align-items: baseline;
+    gap: 12px;
     flex-wrap: wrap;
   }
-  footer a {
+  .foot-name {
+    font-weight: 800;
+    font-size: 1rem;
+    color: var(--text);
+    letter-spacing: -.01em;
+  }
+  .dot { color: var(--accent); }
+  .foot-loc {
+    font-size: .78rem;
+    color: var(--muted);
+    font-family: var(--font-mono);
+  }
+  .foot-links {
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+  }
+  .foot-links a {
+    font-family: var(--font-mono);
+    font-size: .78rem;
     color: var(--muted);
     text-decoration: none;
+    transition: color .15s;
   }
-  footer a:hover { color: var(--accent2); }
-
-  @media (max-width: 768px) {
-    .footer-top {
-      flex-direction: column;
-      gap: 4px;
-    }
-    .footer-loc { margin-left: 0; }
-  }
+  .foot-links a:hover { color: var(--accent); }
 </style>

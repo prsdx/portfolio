@@ -3,66 +3,69 @@
     <span class="label"><span class="pulse" aria-hidden="true"></span> this week</span>
     <p>Shipping Merix's matching-pipeline v2, grinding toward Codeforces 1900, and writing up what Platewise taught me about RAG failure modes.</p>
   </div>
+  <div class="divider" aria-hidden="true"></div>
   <div class="open">
     <span class="label">open to</span>
-    <p><strong>Summer 2027 internships</strong> (backend / AI), open-source collaboration, and research-adjacent projects. If you're hiring a builder who writes and reads without being told to —</p>
+    <p><strong>Summer 2027 internships</strong> in backend / AI engineering, open-source collaboration, and research-adjacent projects. If you're hiring a builder who writes and reads without being told to —</p>
     <a class="mailto" href="mailto:shubham@example.com">get in touch →</a>
   </div>
 </div>
 
 <style>
   .nowstrip {
-    background: var(--chip);
-    border: none;
-    border-radius: 10px;
-    padding: 20px 24px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px 28px;
+    display: grid;
+    grid-template-columns: 1fr 1px 1fr;
     gap: 24px;
+    align-items: start;
   }
-  .now, .open {
-    background: transparent;
-    border: none;
-    border-radius: 0;
-    padding: 0;
-    flex: 1;
+  .divider {
+    background: var(--border);
+    align-self: stretch;
   }
-  .now .label, .open .label {
+  .label {
     display: flex;
     align-items: center;
     gap: 8px;
     font-family: var(--font-mono);
-    font-size: .7rem;
-    letter-spacing: .08em;
+    font-size: .68rem;
+    letter-spacing: .1em;
     text-transform: uppercase;
     color: var(--muted);
     margin-bottom: 10px;
+    font-weight: 700;
   }
   .pulse {
-    width: 10px;
-    height: 10px;
+    width: 8px;
+    height: 8px;
     border-radius: 50%;
     background: var(--accent);
-    animation: pulse 2s infinite;
+    animation: pulse 2.2s infinite;
+    flex-shrink: 0;
   }
-  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.35} }
-  .now p, .open p { color: var(--muted); font-size: .9rem; }
-  .open strong { color: var(--text); }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.85)} }
+  .now p, .open p {
+    color: var(--text-2);
+    font-size: .9rem;
+    line-height: 1.7;
+  }
+  .open strong { color: var(--text); font-weight: 600; }
   .mailto {
     display: inline-block;
-    margin-top: 12px;
+    margin-top: 14px;
     font-family: var(--font-mono);
     font-size: .8rem;
     color: var(--accent);
     text-decoration: none;
+    font-weight: 600;
+    transition: opacity .15s;
   }
-  .mailto:hover { text-decoration: underline; }
+  .mailto:hover { opacity: .75; }
   @media (max-width: 768px) {
-    .nowstrip {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 16px;
-    }
+    .nowstrip { grid-template-columns: 1fr; gap: 20px; }
+    .divider { height: 1px; width: 100%; }
   }
 </style>
