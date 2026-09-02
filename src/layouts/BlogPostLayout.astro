@@ -11,6 +11,8 @@ interface Props {
   tags: string[];
   prevPost?: { title: string; href: string } | null;
   nextPost?: { title: string; href: string } | null;
+  ogImage?: string;
+  structuredData?: Record<string, unknown>;
 }
 
 const {
@@ -21,10 +23,12 @@ const {
   tags,
   prevPost,
   nextPost,
+  ogImage,
+  structuredData,
 } = Astro.props;
 ---
 
-<BaseLayout title={`${title} — Shubham`} description={description}>
+<BaseLayout title={`${title} — Shubham`} description={description} image={ogImage} ogType="article" structuredData={structuredData}>
   <Header />
 
   <main class="post-main">

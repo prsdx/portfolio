@@ -41,6 +41,15 @@ const nextPost = idx > 0
   tags={post.data.tags}
   prevPost={prevPost}
   nextPost={nextPost}
+  ogImage={`/og/blog/${post.id.replace(/\.mdx$/, '')}.png`}
+  structuredData={{
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: post.data.title,
+    author: { '@type': 'Person', name: 'Shubham' },
+    datePublished: post.data.date.toISOString(),
+    url: new URL(`/blog/${post.id.replace(/\.mdx$/, '')}`, Astro.site).href,
+  }}
 >
   <Content />
 </BlogPostLayout>

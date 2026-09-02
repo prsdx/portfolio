@@ -116,6 +116,11 @@ Common fixes:
 
 ## Notes for next task
 <!-- Fill in -->
-- Domain confirmed:
-- Lighthouse scores:
+- Domain confirmed: NOT yet — using `https://prsdx.github.io` (GitHub Pages). Revisit if custom domain lands.
+- Lighthouse scores (post-fix): home 98/100/100/100, blog post 99/100/100/100 (perf/access/bp/seo)
 - Any performance issues found and fixed:
+  - Satori can't parse WOFF2 → OG generation loads Geist TTFs from `node_modules/geist/dist/fonts/` (Regular/Bold/Mono-Regular)
+  - Lighthouse a11y 93 on home → fixed: dark-mode `--accent2` lightened `#5a7a9a` → `#6b8bab` (4.39:1 → 5.52:1 contrast), hero mailto link given persistent underline (link-in-text-block), menu button `aria-label` changed "Toggle navigation" → "Menu" (label-content-name-mismatch)
+- Analytics: none (Shubham's call pending — no tracker added)
+- Twitter card: `summary_large_image` default; OG images 1200×630 PNG via `satori` + `@resvg/resvg-js`, pre-rendered at build (static-safe, no SSR)
+- OG endpoints: `src/pages/og/default.png.ts` + `src/pages/og/blog/[slug].png.ts`; sitemap filters `/og/` routes; robots.txt points at `/sitemap-index.xml`

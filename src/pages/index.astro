@@ -42,7 +42,26 @@ const projects = [
 ];
 ---
 
-<BaseLayout title="Shubham — builds AI systems" description="Shubham's personal portfolio. Third-year CS student at IIITM Gwalior. Building AI systems, solving DSA problems, and writing about it.">
+<BaseLayout title="Shubham — builds AI systems" description="Shubham's personal portfolio. Third-year CS student at IIITM Gwalior. Building AI systems, solving DSA problems, and writing about it." image="/og/default.png" structuredData={{
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Shubham',
+  url: 'https://prsdx.github.io',
+  sameAs: [
+    'https://github.com/prsdx',
+    'https://x.com/prsd_x',
+    'https://codeforces.com/profile/prsdx',
+  ],
+  alumniOf: { '@type': 'EducationalOrganization', name: 'IIITM Gwalior' },
+  knowsAbout: [
+    'Full-Stack',
+    'AI/ML',
+    'RAG Systems',
+    'Competitive Programming',
+    'TypeScript',
+    'Python',
+  ],
+}}>
   <Header />
 
   <main class="home">
