@@ -6,7 +6,10 @@ import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://prsdx.github.io',
+  // Vercel injects VERCEL_URL at build time. For custom domain: replace with 'https://yourdomain.com'
+  site: process.env.VERCEL_URL
+    ? `https://${process.env.VERCEL_URL}`
+    : 'http://localhost:4321',
   integrations: [
     mdx({
       syntaxHighlight: 'shiki',

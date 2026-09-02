@@ -1,3 +1,26 @@
-# Shubham — Portfolio
+# Shubham
 
-> Placeholder. Real llms.txt content lands in task 07.
+> B.Tech + M.Tech student at IIITM Gwalior (graduating 2027).
+> Builds full-stack products, AI/ML systems, and writes about what he learns.
+> GitHub: github.com/prsdx — X: @prsd_x — CF: prsdx (Expert, ~1847)
+
+## Projects
+- [Merix](https://prsdx.github.io/projects/merix): AI-powered placement matching — parses resumes + JDs, embeds them, ranks candidates with plain-language explanations. Stack: FastAPI, Next.js, PostgreSQL, OpenAI.
+- [Platewise](https://prsdx.github.io/projects/platewise): RAG-based menu assistant that answers "what can I eat?" from restaurant menus via semantic search + LLM reasoning. Stack: LangChain, Python, FastAPI, ChromaDB.
+- [YourTomo](https://prsdx.github.io/projects/yourtomo): Renders pixel art from Git commit history — turns your contribution graph into a shareable SVG cat. Stack: TypeScript, Node.js, Git API, SVG.
+
+## Writing
+- [Blog](https://prsdx.github.io/blog): AI/ML, systems, full-stack, competitive programming
+- [RSS](https://prsdx.github.io/rss.xml)
+
+## Structured Data (JSON APIs)
+- [/api/me.json](https://prsdx.github.io/api/me.json) — identity, skills, links
+- [/api/projects.json](https://prsdx.github.io/api/projects.json) — all projects
+- [/api/blog.json](https://prsdx.github.io/api/blog.json) — all published posts
+
+## Pages
+- [/about](https://prsdx.github.io/about) — background, timeline, achievements
+- [/now](https://prsdx.github.io/now) — what he's working on right now
+- [/cp](https://prsdx.github.io/cp) — competitive programming stats
+- [/reading](https://prsdx.github.io/reading) — books, papers, articles
+- [/uses](https://prsdx.github.io/uses) — tools and setup

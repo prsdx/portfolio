@@ -10,4 +10,4 @@ Allow: /
 User-agent: *
 Allow: /
 
-Sitemap: https://prsdx.github.io/sitemap-index.xml
+Sitemap: /sitemap-index.xml
