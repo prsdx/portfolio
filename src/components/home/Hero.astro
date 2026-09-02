@@ -2,50 +2,46 @@
 import Signals from './Signals.astro';
 ---
 <div class="hero rv">
-  <div class="eyebrow-wrap">
-    <p class="eyebrow">
-      <span class="eyebrow-dot"></span>
-      shubham · iiitm gwalior · b.tech + m.tech it · 2027
-    </p>
-  </div>
   <div class="hero-row">
-    <div class="hero-text">
-      <h1 class="hero-title" aria-label="I build AI systems that actually ship.">
-        <span class="word-line">
-          <span class="word" style="--d: 80ms">I</span>
-          <span class="word" style="--d: 140ms">build</span>
-          <span class="word" style="--d: 200ms">AI</span>
-          <span class="word" style="--d: 260ms">systems</span>
-        </span>
-        <span class="word-line">
-          <span class="word h1-accent" style="--d: 340ms">that</span>
-          <span class="word h1-accent" style="--d: 400ms">actually</span>
-          <span class="word h1-accent" style="--d: 460ms">ship.</span>
-        </span>
+    <div class="hero-content">
+      <p class="hero-kicker">Software & Systems Engineering</p>
+      
+      <h1 class="hero-title">
+        Engineering reliable systems,<br>
+        algorithms & AI pipelines.
       </h1>
-      <p class="sub">
-        Third-year CS student. Three products built, 500+ DSA problems across platforms,
-        and writing on everything I learn along the way.
-        Currently: rebuilding Merix's matching pipeline, reading DDIA ch. 7,
-        grinding Codeforces to 1900.
+
+      <p class="hero-bio">
+        I'm <strong>Shubham</strong>, a third-year student at <strong>IIITM Gwalior</strong> (B.Tech + M.Tech IT, 2027).
+        I spend my time between competitive programming (<a href="https://codeforces.com/profile/prsdx" target="_blank" rel="noreferrer">Codeforces Expert, 1847</a>),
+        retrieval-augmented architectures, and reading database internals chapter by chapter.
       </p>
-      <p class="hero-facts">
-        B.Tech + M.Tech IT · IIITM Gwalior · Gwalior, India · graduating 2027 · <a href="mailto:shubham@example.com">shubham@example.com</a>
-      </p>
-      <div class="hero-cta-group">
-        <a href="#" class="hero-resume magnetic" aria-label="Download resume (PDF placeholder)">
-          <span>download resume</span>
-          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="resume-icon"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
+
+      <div class="hero-meta">
+        <span>Gwalior, India</span>
+        <span class="sep">·</span>
+        <span>Graduating 2027</span>
+        <span class="sep">·</span>
+        <a href="mailto:shubham@example.com">shubham@example.com</a>
+      </div>
+
+      <div class="hero-actions">
+        <a href="/resume.pdf" class="btn-resume">
+          <span>Résumé</span>
+          <span class="arr" aria-hidden="true">&rarr;</span>
         </a>
+        <a href="#work" class="btn-explore">Selected Work</a>
       </div>
     </div>
 
-    <div class="photo-container">
-      <div class="photo" role="img" aria-label="Portrait of Shubham — placeholder">
-        <span class="photo-letter">S</span>
-        <div class="photo-status-badge">
-          <span class="badge-dot"></span>
-          <span>Open to S27</span>
+    <div class="hero-aside">
+      <div class="portrait-card">
+        <div class="portrait-box">
+          <span class="portrait-char">S</span>
+        </div>
+        <div class="portrait-footnote">
+          <span class="status-dot"></span>
+          <span>Open to Summer 2027</span>
         </div>
       </div>
     </div>
@@ -55,214 +51,204 @@ import Signals from './Signals.astro';
 </div>
 
 <style>
-  .hero { padding: 72px 0 12px; }
-
-  .eyebrow-wrap {
-    margin-bottom: 20px;
-  }
-  .eyebrow {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    font-family: var(--font-mono);
-    font-size: .78rem;
-    color: var(--accent);
-    letter-spacing: .06em;
-    background: var(--accent-dim);
-    padding: 4px 12px;
-    border-radius: 20px;
-    border: 1px solid rgba(232, 176, 74, 0.2);
-  }
-  .eyebrow-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--accent);
-    box-shadow: 0 0 8px var(--accent);
-  }
-
-  /* Word-by-word headline reveal */
-  .hero-title {
-    font-size: clamp(2.4rem, 6vw, 3.8rem);
-    font-weight: 800;
-    letter-spacing: -.03em;
-    line-height: 1.08;
-    color: var(--text);
-    margin-bottom: 22px;
-  }
-  .word-line {
-    display: block;
-    overflow: hidden;
-  }
-  .word {
-    display: inline-block;
-    opacity: 0;
-    transform: translateY(105%);
-    animation: word-reveal 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    animation-delay: var(--d, 0ms);
-    will-change: transform, opacity;
-  }
-  @keyframes word-reveal {
-    0% {
-      opacity: 0;
-      transform: translateY(105%);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  .h1-accent {
-    background: linear-gradient(135deg, var(--accent) 0%, #f4c96e 55%, var(--accent2) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  .sub {
-    color: var(--text-2);
-    font-size: 1.02rem;
-    line-height: 1.7;
-    max-width: 46em;
-    margin-bottom: 18px;
-  }
-
-  .hero-facts {
-    font-family: var(--font-mono);
-    font-size: .75rem;
-    color: var(--muted);
-    margin-bottom: 24px;
-    line-height: 1.8;
-  }
-  .hero-facts a {
-    color: var(--accent2);
-    text-decoration: underline;
-    text-underline-offset: 2px;
-  }
-  .hero-facts a:hover { color: var(--accent); }
-
-  .hero-cta-group {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-  }
-
-  .hero-resume {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 10px 22px;
-    border: 1.5px solid var(--accent);
-    color: var(--accent);
-    border-radius: 8px;
-    font-family: var(--font-mono);
-    font-size: .82rem;
-    text-decoration: none;
-    font-weight: 600;
-    background: transparent;
-    transition: background .2s ease, color .2s ease, box-shadow .2s ease, border-color .2s ease;
-  }
-  .hero-resume .resume-icon {
-    transition: transform .2s ease;
-  }
-  .hero-resume:hover {
-    background: var(--accent);
-    color: var(--bg);
-    box-shadow: 0 0 24px var(--accent-dim), 0 4px 12px rgba(0,0,0,0.2);
-  }
-  .hero-resume:hover .resume-icon {
-    transform: translateY(2px);
+  .hero {
+    padding: 64px 0 16px;
   }
 
   .hero-row {
     display: grid;
-    grid-template-columns: 1fr auto;
+    grid-template-columns: 1fr 220px;
     gap: 48px;
-    align-items: center;
+    align-items: start;
   }
 
-  .photo-container {
-    position: relative;
+  .hero-kicker {
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    font-weight: 500;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
   }
-  .photo {
-    width: 200px;
-    aspect-ratio: 3/4;
-    border-radius: 16px;
+
+  .hero-title {
+    font-size: clamp(2.2rem, 5vw, 3.2rem);
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 1.15;
+    color: var(--text);
+    margin-bottom: 20px;
+  }
+
+  .hero-bio {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: var(--text-2);
+    max-width: 44em;
+    margin-bottom: 22px;
+  }
+  .hero-bio strong {
+    color: var(--text);
+    font-weight: 600;
+  }
+  .hero-bio a {
+    color: var(--text);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: var(--border-hover);
+    transition: text-decoration-color 0.15s, color 0.15s;
+  }
+  .hero-bio a:hover {
+    color: var(--accent);
+    text-decoration-color: var(--accent);
+  }
+
+  .hero-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--muted);
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+  }
+  .hero-meta .sep {
+    color: var(--border);
+  }
+  .hero-meta a {
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+  .hero-meta a:hover {
+    color: var(--text);
+  }
+
+  .hero-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .btn-resume {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 18px;
+    background: var(--text);
+    color: var(--bg);
+    border-radius: var(--radius);
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: opacity 0.15s, transform 0.15s;
+  }
+  .btn-resume:hover {
+    opacity: 0.92;
+    transform: translateY(-1px);
+  }
+  .btn-resume .arr {
+    transition: transform 0.15s;
+  }
+  .btn-resume:hover .arr {
+    transform: translateX(2px);
+  }
+
+  .btn-explore {
+    display: inline-flex;
+    align-items: center;
+    padding: 9px 16px;
+    background: transparent;
+    color: var(--text-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: border-color 0.15s, color 0.15s, background 0.15s;
+  }
+  .btn-explore:hover {
+    border-color: var(--border-hover);
+    color: var(--text);
+    background: var(--surface);
+  }
+
+  /* Aside portrait */
+  .hero-aside {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .portrait-card {
+    width: 100%;
+    max-width: 200px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .portrait-box {
+    width: 100%;
+    aspect-ratio: 4/5;
+    border-radius: var(--radius);
     background: var(--surface);
     border: 1px solid var(--border);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: var(--font-mono);
-    position: relative;
-    overflow: hidden;
-    box-shadow: var(--shadow-card);
-    transition: border-color .25s ease, transform .25s ease, box-shadow .25s ease;
+    transition: border-color 0.2s;
   }
-  .photo:hover {
-    border-color: var(--accent);
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-hover);
-  }
-  .photo::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(circle at 50% 35%, var(--accent-dim), transparent 70%);
-  }
-  .photo-letter {
-    font-size: 3.8rem;
-    color: var(--accent);
-    font-weight: 800;
-    z-index: 1;
+  .portrait-box:hover {
+    border-color: var(--border-hover);
   }
 
-  .photo-status-badge {
-    position: absolute;
-    bottom: 12px;
-    left: 50%;
-    transform: translateX(-50%);
+  .portrait-char {
+    font-family: var(--font-mono);
+    font-size: 3.2rem;
+    font-weight: 700;
+    color: var(--muted);
+    opacity: 0.6;
+  }
+
+  .portrait-footnote {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    padding: 4px 10px;
-    border-radius: 20px;
-    background: var(--header-bg);
-    border: 1px solid var(--border);
+    gap: 7px;
     font-family: var(--font-mono);
-    font-size: .65rem;
-    color: var(--text-2);
-    white-space: nowrap;
-    backdrop-filter: blur(8px);
-    z-index: 2;
+    font-size: 0.72rem;
+    color: var(--muted);
   }
-  .badge-dot {
+  .status-dot {
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    background: #34d399; /* emerald green */
-    box-shadow: 0 0 8px rgba(52, 211, 153, 0.7);
-    animation: status-pulse 2s infinite;
-  }
-  @keyframes status-pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: .4; transform: scale(0.85); }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .word {
-      opacity: 1 !important;
-      transform: none !important;
-      animation: none !important;
-    }
+    background: #10b981;
   }
 
   @media (max-width: 768px) {
-    .hero-row { grid-template-columns: 1fr; gap: 24px; }
-    .photo-container { order: -1; }
-    .photo { width: 120px; aspect-ratio: 1/1; border-radius: 50%; }
-    .photo-letter { font-size: 2.2rem; }
-    .photo-status-badge { display: none; }
+    .hero-row {
+      grid-template-columns: 1fr;
+      gap: 28px;
+    }
+    .hero-aside {
+      order: -1;
+      justify-content: flex-start;
+    }
+    .portrait-card {
+      max-width: 110px;
+      gap: 8px;
+    }
+    .portrait-box {
+      aspect-ratio: 1/1;
+      border-radius: 50%;
+    }
+    .portrait-char {
+      font-size: 1.8rem;
+    }
+    .portrait-footnote {
+      display: none;
+    }
   }
 </style>

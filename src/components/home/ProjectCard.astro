@@ -10,186 +10,126 @@ interface Props {
 const { title, description, stack, github, live, caseStudy } = Astro.props;
 ---
 <article class="proj rv">
-  <div class="proj-top">
-    <h3>{title}</h3>
-    <div class="p-links">
-      {github && <a href={github} aria-label={`${title} on GitHub`}>GitHub ↗</a>}
-      {live   && <a href={live}   aria-label={`${title} live demo`}>Live ↗</a>}
+  <div class="proj-head">
+    <h3 class="proj-title">{title}</h3>
+    <div class="proj-links">
+      {github && <a href={github} target="_blank" rel="noreferrer" aria-label={`${title} on GitHub`}>GitHub ↗</a>}
+      {live && <a href={live} target="_blank" rel="noreferrer" aria-label={`${title} live site`}>Live ↗</a>}
     </div>
   </div>
-  <p>{description}</p>
-  <div class="stack">
-    {stack.map((t) => <code>{t}</code>)}
-  </div>
-  <a class="case-btn magnetic" href={caseStudy ?? '#'}>
-    <span>read case study</span>
-    <span class="arr" aria-hidden="true">→</span>
-  </a>
-</article>
 
-<script>
-  // ProjectCard interactive mouse spotlight
-  const cards = document.querySelectorAll('.proj');
-  cards.forEach((c) => {
-    const card = c as HTMLElement;
-    card.addEventListener('pointermove', (e) => {
-      const rect = card.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      card.style.setProperty('--card-x', `${x}px`);
-      card.style.setProperty('--card-y', `${y}px`);
-    });
-  });
-</script>
+  <p class="proj-desc">{description}</p>
+
+  <div class="proj-footer">
+    <div class="proj-stack">
+      {stack.map((tech) => <span>{tech}</span>)}
+    </div>
+    
+    <a class="proj-cta" href={caseStudy ?? '#'}>
+      <span>Case Study</span>
+      <span class="arr" aria-hidden="true">&rarr;</span>
+    </a>
+  </div>
+</article>
 
 <style>
   .proj {
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: var(--radius);
-    padding: 24px;
+    padding: 22px;
     display: flex;
     flex-direction: column;
     gap: 14px;
-    transition: border-color .25s ease, transform .25s ease, box-shadow .25s ease;
-    position: relative;
-    overflow: hidden;
-    box-shadow: var(--shadow-card);
-  }
-
-  /* Interactive card inner spotlight */
-  .proj::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    opacity: 0;
-    background: radial-gradient(350px circle at var(--card-x, 50%) var(--card-y, 50%), var(--accent-dim), transparent 80%);
-    transition: opacity .35s ease;
-    z-index: 0;
-  }
-  .proj:hover::before { opacity: 1; }
-
-  /* Animated top gradient bar */
-  .proj::after {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, var(--accent), var(--accent2), transparent);
-    background-size: 200% 100%;
-    opacity: 0;
-    transition: opacity .25s ease;
-    z-index: 1;
+    transition: border-color 0.15s ease, background 0.15s ease;
   }
   .proj:hover {
     border-color: var(--border-hover);
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-hover);
-  }
-  .proj:hover::after {
-    opacity: 1;
-    animation: shimmer-flow 2.5s infinite linear;
+    background: var(--surface-2);
   }
 
-  @keyframes shimmer-flow {
-    0% { background-position: 200% 0; }
-    100% { background-position: -200% 0; }
-  }
-
-  .proj-top {
+  .proj-head {
     display: flex;
-    align-items: flex-start;
+    align-items: baseline;
     justify-content: space-between;
     gap: 8px;
-    position: relative;
-    z-index: 1;
   }
 
-  .proj h3 {
-    font-size: 1.12rem;
-    font-weight: 700;
+  .proj-title {
+    font-size: 1.05rem;
+    font-weight: 600;
     color: var(--text);
-    letter-spacing: -.01em;
+    letter-spacing: -0.01em;
   }
 
-  .p-links {
+  .proj-links {
     display: flex;
     gap: 10px;
-    flex-shrink: 0;
   }
-  .p-links a {
+  .proj-links a {
     font-family: var(--font-mono);
-    font-size: .72rem;
+    font-size: 0.72rem;
     color: var(--muted);
     text-decoration: none;
-    transition: color .15s ease;
+    transition: color 0.15s;
   }
-  .p-links a:hover { color: var(--accent); }
+  .proj-links a:hover {
+    color: var(--text);
+  }
 
-  .proj > p {
+  .proj-desc {
+    font-size: 0.9rem;
+    line-height: 1.6;
     color: var(--text-2);
-    font-size: .92rem;
-    line-height: 1.68;
     flex: 1;
-    position: relative;
-    z-index: 1;
   }
 
-  .stack {
+  .proj-footer {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-top: auto;
+    padding-top: 8px;
+  }
+
+  .proj-stack {
     display: flex;
     flex-wrap: wrap;
     gap: 6px;
-    margin-top: auto;
-    position: relative;
-    z-index: 1;
   }
-  .stack code {
+  .proj-stack span {
     font-family: var(--font-mono);
-    font-size: .67rem;
+    font-size: 0.68rem;
     background: var(--chip);
     border: 1px solid var(--chip-border);
-    padding: 3px 8px;
-    border-radius: 5px;
+    padding: 2px 7px;
+    border-radius: 4px;
     color: var(--muted);
-    letter-spacing: .02em;
-    transition: border-color .15s ease, color .15s ease;
-  }
-  .proj:hover .stack code {
-    border-color: var(--border-hover);
-    color: var(--text-2);
   }
 
-  .case-btn {
-    display: flex;
+  .proj-cta {
+    display: inline-flex;
     align-items: center;
-    justify-content: center;
-    gap: 6px;
-    width: 100%;
-    text-align: center;
-    padding: 10px 14px;
-    margin-top: 4px;
+    justify-content: space-between;
+    padding: 8px 12px;
     border: 1px solid var(--border);
-    border-radius: 8px;
+    border-radius: 6px;
     font-family: var(--font-mono);
-    font-size: .78rem;
+    font-size: 0.76rem;
     color: var(--text-2);
     text-decoration: none;
-    transition: border-color .2s ease, color .2s ease, background .2s ease, box-shadow .2s ease;
-    font-weight: 500;
-    position: relative;
-    z-index: 1;
+    background: transparent;
+    transition: border-color 0.15s, color 0.15s, background 0.15s;
   }
-  .case-btn .arr {
-    transition: transform .2s ease;
+  .proj-cta .arr {
+    transition: transform 0.15s;
   }
-  .case-btn:hover {
-    border-color: var(--accent);
-    color: var(--accent);
-    background: var(--accent-dim);
-    box-shadow: 0 0 16px var(--accent-dim);
+  .proj-cta:hover {
+    border-color: var(--border-hover);
+    color: var(--text);
+    background: var(--surface);
   }
-  .case-btn:hover .arr {
-    transform: translateX(3px);
+  .proj-cta:hover .arr {
+    transform: translateX(2px);
   }
 </style>

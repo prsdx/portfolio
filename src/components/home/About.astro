@@ -1,71 +1,66 @@
 <div class="about rv">
-  <div class="photo" role="img" aria-label="Portrait of Shubham — placeholder">S</div>
-  <div class="about-text">
-    <p>I'm Shubham — a third-year <strong>B.Tech + M.Tech IT student at IIITM Gwalior</strong>. I got into programming through competitive programming (prsdx on Codeforces), stayed for the systems, and now spend most of my time building AI products and writing about what I learn.</p>
-    <p>Right now I'm deep in retrieval pipelines and embedding trade-offs, rebuilding Merix's matching engine, and working through <strong>Designing Data-Intensive Applications</strong> one chapter at a time — with notes, in public.</p>
-    <ul class="facts">
-      <li>Gwalior, India</li>
-      <li>graduating 2027</li>
-      <li>prsdx · cf 1847</li>
-      <li>github.com/prsdx</li>
-    </ul>
+  <div class="about-content">
+    <p>
+      I got into programming through competitive problem-solving — breaking down combinatorial patterns, optimizing asymptotic bounds, and reaching <strong>Codeforces Expert (1847)</strong>. That discipline for edge cases and performance naturally pulled me toward backend systems and data architecture.
+    </p>
+    <p>
+      Now, most of my focus is on applied AI and data systems: evaluating embedding spaces, optimizing vector retrieval pipelines, and studying <strong>Designing Data-Intensive Applications</strong> chapter by chapter. I believe the best engineering proof is building systems in public and writing clearly about what broke.
+    </p>
+    <div class="about-footer">
+      <a href="/about" class="about-link">
+        <span>More background & timeline</span>
+        <span class="arr" aria-hidden="true">&rarr;</span>
+      </a>
+    </div>
   </div>
 </div>
 
 <style>
   .about {
-    display: grid;
-    grid-template-columns: 140px 1fr;
-    gap: 32px;
-    align-items: start;
-  }
-  .photo {
-    width: 140px;
-    aspect-ratio: 3/4;
-    border-radius: 12px;
     background: var(--surface);
     border: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: var(--font-mono);
-    font-size: 2.8rem;
-    color: var(--accent);
-    position: relative;
-    overflow: hidden;
-    flex-shrink: 0;
+    border-radius: var(--radius);
+    padding: 28px 32px;
   }
-  .photo::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(circle at 50% 40%, var(--accent-dim), transparent 70%);
-  }
-  .about-text p {
+  .about-content p {
     color: var(--text-2);
-    line-height: 1.75;
-    margin-bottom: 14px;
-    font-size: .97rem;
+    line-height: 1.72;
+    margin-bottom: 16px;
+    font-size: 0.98rem;
+    max-width: 54em;
   }
-  .about-text p strong { color: var(--text); font-weight: 600; }
-  .facts {
-    list-style: none;
-    display: flex;
-    flex-wrap: wrap;
+  .about-content p strong {
+    color: var(--text);
+    font-weight: 600;
+  }
+  .about-footer {
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+  }
+  .about-link {
+    display: inline-flex;
+    align-items: center;
     gap: 6px;
-    margin-top: 8px;
-  }
-  .facts li {
     font-family: var(--font-mono);
-    font-size: .7rem;
-    background: var(--chip);
-    border: 1px solid var(--chip-border);
-    padding: 3px 9px;
-    border-radius: 5px;
-    color: var(--muted);
+    font-size: 0.8rem;
+    color: var(--accent);
+    text-decoration: none;
+    transition: opacity 0.15s;
   }
+  .about-link .arr {
+    transition: transform 0.15s;
+  }
+  .about-link:hover {
+    opacity: 0.85;
+  }
+  .about-link:hover .arr {
+    transform: translateX(3px);
+  }
+
   @media (max-width: 768px) {
-    .about { grid-template-columns: 1fr; }
-    .photo { width: 100px; aspect-ratio: 1; border-radius: 50%; font-size: 2rem; }
+    .about {
+      padding: 20px 22px;
+    }
   }
 </style>
